@@ -19,6 +19,9 @@ class LoginMain : AppCompatActivity() {
         // if account login is valid, will generate intent to go to mainActivity
         // if account sign in is not valid, will use loginErrorText bar to indicate failure
         loginButton.setOnClickListener() {
+            val usernameString: String = usernameInput.text.toString()
+            val userPassword: String = passwordInput.text.toString()
+
 
         }
 
