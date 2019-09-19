@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Grouper</string>
-    <string name="loginTitle">User Name :</string>
-    <string name="passwordTitle">Password :</string>
-    <string name="loginButton">Log-in</string>
-    <string name="createAccountButton">Create Account</string>
-    <string name="loginErrorString">""</string>
-</resources>
