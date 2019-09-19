@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Grouper</string>
+    <string name="loginTitle">User Name :</string>
+    <string name="passwordTitle">Password :</string>
+    <string name="loginButton">Log-in</string>
+    <string name="createAccountButton">New User?</string>
+    <string name="loginErrorString">""</string>
+
+    <string name="newUsernameTitle">"Enter a Username</string>
+    <string name="newUserEmailTitle">"Enter an E-mail</string>
+    <string name="newPasswordTitle">"Enter a Password"</string>
+    <string name="verifPasswordTitle">Re-enter password</string>
+    <string name="submitNewAccountButton">Create Account</string>
+    <string name="userAlreadyAccountButton">Already Have Account?</string>
 </resources>
