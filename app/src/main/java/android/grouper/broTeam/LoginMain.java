@@ -2,9 +2,12 @@ package android.grouper.broTeam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import static java.security.AccessController.getContext;
 
 public class LoginMain extends AppCompatActivity {
 
@@ -21,6 +24,14 @@ public class LoginMain extends AppCompatActivity {
             @Override
             public void onClick(View view1) {
                 // this is where the code for logging in goes
+
+                // presumably bundle and send data to fire base
+
+                // presumably wait for firebase to confirm
+
+                // If valid account, create intent to go to user main page
+
+                // if fail change dialog box to read log in error
             }
         });
 
@@ -32,6 +43,8 @@ public class LoginMain extends AppCompatActivity {
             @Override
             public void onClick(View view2) {
                 // this is the code for going to create account page
+                Intent gotoNewAccount = new Intent(view2.getContext(), CreateNewAccount.class);
+                view2.getContext().startActivity(gotoNewAccount);
             }
         });
     }
