@@ -27,17 +27,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_creat_group_icon" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/groupCardContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeMainDivider"
-        app:layout_constraintVertical_bias="0.505">
-    </androidx.cardview.widget.CardView>
-
     <View
         android:id="@+id/homeMainDivider"
         android:layout_width="match_parent"
@@ -49,5 +38,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createGroupTxtView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupRecyclerView"
+        android:layout_width="403dp"
+        android:layout_height="668dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homeMainDivider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
