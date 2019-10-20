@@ -12,4 +12,6 @@
     <string name="verifPasswordTitle">Re-enter Password</string>
     <string name="submitNewAccountButton">Create Account</string>
     <string name="userAlreadyAccountButton">Already Have Account?</string>
+    <string name="action_notification">Notifications</string>
+    <string name="no_groups_available">You are not in any groups</string>
 </resources>

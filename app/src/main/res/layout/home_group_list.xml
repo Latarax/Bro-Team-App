@@ -4,4 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeGroupList"/>
+    tools:context=".HomeGroupList">
+
+    <TextView
+        android:id="@+id/createGroupTxtView"
+        android:layout_width="121dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:text="Create Group"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_creat_group_icon" />
+
+    <View
+        android:id="@+id/homeMainDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="#C46D6D6D"
+        android:backgroundTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createGroupTxtView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupRecyclerView"
+        android:layout_width="403dp"
+        android:layout_height="668dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homeMainDivider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
