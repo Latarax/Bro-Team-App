@@ -1,7 +1,10 @@
 package android.grouper.broTeam;
 
+import android.view.View;
+
 public class CardModel {
 
+    private View.OnClickListener onClickListener;
     private String title, description;
     private int img;
 
@@ -28,7 +31,5 @@ public class CardModel {
     public void setImg(int img) {
         this.img = img;
     }
-
-
 }
 

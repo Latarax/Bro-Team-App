@@ -11,9 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".HomeGroupList"/>
-        <activity android:name=".CreateNewAccount"/>
+        <activity android:name=".HomeTaskList"></activity>
+        <activity android:name=".HomeGroupList" />
+        <activity android:name=".CreateNewAccount" />
         <activity android:name=".LoginMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,4 +22,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
