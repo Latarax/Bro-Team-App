@@ -28,5 +28,7 @@ public class CardModel {
     public void setImg(int img) {
         this.img = img;
     }
+
+
 }
 
