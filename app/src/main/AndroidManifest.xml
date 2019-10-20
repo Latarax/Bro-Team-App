@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".HomeTaskList"></activity>
+        <activity android:name=".GroupWaypointDisplay"></activity>
+        <activity android:name=".GroupChatDisplay" />
+        <activity android:name=".GroupTaskDisplay" />
         <activity android:name=".HomeGroupList" />
         <activity android:name=".CreateNewAccount" />
         <activity android:name=".LoginMain">
