@@ -92,6 +92,7 @@ public class LoginMain extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()){
                     Intent goToHome = new Intent(LoginMain.this, HomeGroupList.class);
+                    goToHome.putExtra("email", usernameField.getText());
                     goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(goToHome);
                 }
