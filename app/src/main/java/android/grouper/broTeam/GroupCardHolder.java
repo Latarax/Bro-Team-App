@@ -13,7 +13,7 @@ public class GroupCardHolder extends RecyclerView.ViewHolder implements View.OnC
     TextView mTitle, mDescription;
     cardClickListener mCardClickListener;
 
-    public GroupCardHolder(@NonNull View itemView) {
+     GroupCardHolder(@NonNull View itemView) {
         super(itemView);
 
         this.mDescription = itemView.findViewById(R.id.descriptionIv);
