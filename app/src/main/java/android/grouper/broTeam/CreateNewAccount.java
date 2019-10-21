@@ -10,23 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class CreateNewAccount extends AppCompatActivity {
 
-    EditText emailField, passwordField;
-    Button submitAccountBtn;
+    EditText emailField, passwordField, usernameField;
+    Button submitAccountBtn, haveAccountBtn;
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class CreateNewAccount extends AppCompatActivity {
         emailField = findViewById(R.id.newEmailEntry);
         passwordField = findViewById(R.id.newPasswordEntry);
         progressBar = findViewById(R.id.progressBar);
+        usernameField = findViewById(R.id.newUsernameEntry);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -46,11 +47,23 @@ public class CreateNewAccount extends AppCompatActivity {
                 createAccount();
             }
         });
+
+        Button haveAccountBtn = findViewById(R.id.haveAccountButton);
+        haveAccountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                // this is the code for going to create account page
+                Intent returnToLogin = new Intent(view2.getContext(), LoginMain.class);
+                view2.getContext().startActivity(returnToLogin);
+            }
+        });
     }
+
 
     private void createAccount() {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
+        final String username = usernameField.getText().toString().trim();
 
         if (email.isEmpty()) {
             emailField.setError("Must enter an email address");
@@ -59,6 +72,12 @@ public class CreateNewAccount extends AppCompatActivity {
         }
 
         if (password.isEmpty()) {
+            passwordField.setError("Must enter a password");
+            passwordField.requestFocus();
+            return;
+        }
+
+        if (username.isEmpty()) {
             passwordField.setError("Must enter a password");
             passwordField.requestFocus();
             return;
@@ -75,16 +94,15 @@ public class CreateNewAccount extends AppCompatActivity {
                     Intent goToHome = new Intent(CreateNewAccount.this, HomeGroupList.class);
                     goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(goToHome);
-                    /*
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null){
-                        String uid = user.getUid();
-                        Map<String, Object> uID = new HashMap<>();
-                        uID.put("uid", uid);
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(username)
+                                .build();
+                        user.updateProfile(profileUpdates);
+                        db.collection("usersList").document(user.getUid()).set(user);
 
-                        db.collection("UID's").document("")
                     }
-                    */
                 }
 
 
