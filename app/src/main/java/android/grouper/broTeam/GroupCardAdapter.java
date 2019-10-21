@@ -40,7 +40,7 @@ public class GroupCardAdapter extends RecyclerView.Adapter<GroupCardHolder> {
             @Override
             public void onCardClickListener(View v, int position) {
                 String groupName = cardModels.get(position).getTitle();
-                Intent intent = new Intent(context, HomeTaskList.class);
+                Intent intent = new Intent(context, GroupTaskDisplay.class);
                 intent.putExtra("iTitle", groupName);
                 context.startActivity(intent);
             }
