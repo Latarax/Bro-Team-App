@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /*
  #####################################################
@@ -45,7 +46,7 @@ public class HomeGroupList extends AppCompatActivity {
 
 
         ArrayList<CardModel> models = new ArrayList<>();
-        ArrayList<DocumentReference> groups = new ArrayList<>();
+        final ArrayList<DocumentReference> groups = new ArrayList<>();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -60,7 +61,10 @@ public class HomeGroupList extends AppCompatActivity {
                          if(!document.getData().containsKey("groupList")){
                              Log.d("no array", "No groupList");
                          } else {
-                             Log.d("DocumentSnapshot data: ", ""+document.getData());
+                             Map<String, Object> data = document.getData();
+                             //groups.add(data.get("groupList"));
+                             Log.d("map", ""+data);
+                             Log.d("array", ""+data.get("groupList"));
                          }
                          //Object groupArray = document.getData("groupList");
                          ///Log.d("array object", ""+groupArray);

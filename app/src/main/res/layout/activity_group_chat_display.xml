@@ -45,8 +45,7 @@
             android:textSize= "15dp"
             android:clickable= "true"
             android:gravity= "center"
-            />
-
+            />"
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
