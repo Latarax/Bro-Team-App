@@ -46,7 +46,7 @@ public class HomeGroupList extends AppCompatActivity {
 
 
         ArrayList<CardModel> models = new ArrayList<>();
-        final ArrayList<DocumentReference> groups = new ArrayList<>();
+        final ArrayList<Object> groups = new ArrayList<>();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -62,26 +62,11 @@ public class HomeGroupList extends AppCompatActivity {
                              Log.d("no array", "No groupList");
                          } else {
                              Map<String, Object> data = document.getData();
-                             //groups.add(data.get("groupList"));
+                             ArrayList<DocumentReference> c = (ArrayList<DocumentReference>) document.get("groupList");
+                             Log.d("groups", ""+c);
                              Log.d("map", ""+data);
                              Log.d("array", ""+data.get("groupList"));
                          }
-                         //Object groupArray = document.getData("groupList");
-                         ///Log.d("array object", ""+groupArray);
-                         /*groupArray.get().addOnSuccessListener(new OnCompleteListener<DocumentSnapshot>(){
-                             @Override
-                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                 if(task.isSuccessful())
-                                 {
-                                     DocumentSnapshot a = task.getResult();
-                                     if(a.exists()) {
-                                         Log.d("array", ""+a.getData());
-                                     } else {
-                                         Log.d("no array", "No array");
-                                     }
-                                 }
-                             }
-                         })*/
                      } else {
                          Log.d("no field", "No such document");
                      }
@@ -91,50 +76,38 @@ public class HomeGroupList extends AppCompatActivity {
              }
          });
 
-        /*database.collection("userList").document(user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            Log.d("document snapshot", "" + document.get("email"));
-
-                        } else {
-                            Log.d("document snapshot", "no such document");
-                        }
-                    }
-                });*/
-
+         if(groups.isEmpty()) {
              CardModel m = new CardModel();
              m.setTitle("Bro Team");
              m.setDescription("Just a bunch of bro's");
              m.setImg(R.drawable.ic_launcher_background);
              models.add(m);
 
-            CardModel p = new CardModel();
-            p.setTitle("Party team");
-            p.setDescription("Lets get liiiiit");
-            p.setImg(R.drawable.ic_launcher_background);
-            models.add(p);
+             CardModel p = new CardModel();
+             p.setTitle("Party team");
+             p.setDescription("Lets get liiiiit");
+             p.setImg(R.drawable.ic_launcher_background);
+             models.add(p);
 
-            CardModel f = new CardModel();
-            f.setTitle("Friends");
-            f.setDescription("Lets help each other out");
-            f.setImg(R.drawable.ic_launcher_background);
-            models.add(f);
+             CardModel f = new CardModel();
+             f.setTitle("Friends");
+             f.setDescription("Lets help each other out");
+             f.setImg(R.drawable.ic_launcher_background);
+             models.add(f);
 
-            CardModel r = new CardModel();
-            r.setTitle("Roomates");
-            r.setDescription("For keeping the apartment cleen");
-            r.setImg(R.drawable.ic_launcher_background);
-            models.add(r);
-            return models;
+             CardModel r = new CardModel();
+             r.setTitle("Roomates");
+             r.setDescription("For keeping the apartment clean");
+             r.setImg(R.drawable.ic_launcher_background);
+             models.add(r);
+             return models;
+         }
 
-
-        /*Log.d("groups", "trying to get group info");
-        for(Type gid: groups) {
-            database.collection("/groupList")
+        Log.d("groups", ""+groups);
+        for(Object gid: groups) {
+            Log.d("groups array", ""+gid);
+            /*CollectionReference groupId = database.collection();
+            database.collection(gid)
                     .whereEqualTo(gid.toString(), true)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -150,9 +123,9 @@ public class HomeGroupList extends AppCompatActivity {
                                 }
                             }
                         }
-                    });
-        }*/
+                    });*/
+        }
 
-        //return models;
+        return models;
     }
 }
