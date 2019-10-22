@@ -1,23 +1,12 @@
 package android.grouper.broTeam;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /*
  #####################################################
@@ -45,35 +34,68 @@ public class HomeGroupList extends AppCompatActivity {
     private ArrayList<CardModel> getMyList() {
 
 
-        final ArrayList<CardModel> models = new ArrayList<>();
-        final ArrayList<String> groups = new ArrayList<>();
+        ArrayList<CardModel> models = new ArrayList<>();
+        /*final ArrayList<DocumentReference> groups = new ArrayList<>();
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        Log.d("userid", ""+user.getUid());
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection("/userList")
-                .whereEqualTo(user.getUid(), true)
+        DocumentReference uId = database.collection("userList").document(user.getUid())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        Log.d("myTag", "trying to get groupList");
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                List<String> list = (List<String>) document.get("groupList");
-                                for (String t : list) {
-                                    groups.add(t);
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists())
+                            {
+                                List<DocumentReference> list = (List<DocumentReference>) document.get("groupList");
+                                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+                                for(DocumentReference documentReference : list)
+                                {
+                                    Task<DocumentSnapshot> documentSnapshotTask = documentReference.get();
+                                    tasks.add(documentSnapshotTask);
                                 }
+
+                                Tasks.whenAllSuccess(tasks).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
+                                    @Override
+                                    public void onSuccess(List<Object> list) {
+                                        for(Object object : list){
+                                            Log.d("groups", ""+object.toString());
+                                        }
+                                    }
+                                });
+
                             }
-                        } else {
-                            // failed
-                            Log.d("failed", "failed to get groups");
                         }
                     }
                 });
-        
-        if(groups.size() == 0)
-        {
+
+
+
+        //groups.addAll(t);
+                /*.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()) {
+                            Log.d("myTag", "trying to get groupList");
+                            List<Type> types = (List<Type>)documentSnapshot.get("userList");
+                            groups.addAll(types);
+                        } else {
+                          Log.d("mytag", "query document is empty");
+                          return;
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("mytag", "Error getting groups");
+                    }
+                });*/
+
              CardModel m = new CardModel();
              m.setTitle("Bro Team");
              m.setDescription("Just a bunch of bro's");
@@ -98,11 +120,12 @@ public class HomeGroupList extends AppCompatActivity {
             r.setImg(R.drawable.ic_launcher_background);
             models.add(r);
             return models;
-        }
 
-        for(final String gid: groups) {
+
+        /*Log.d("groups", "trying to get group info");
+        for(Type gid: groups) {
             database.collection("/groupList")
-                    .whereEqualTo(gid, true)
+                    .whereEqualTo(gid.toString(), true)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -120,6 +143,6 @@ public class HomeGroupList extends AppCompatActivity {
                     });
         }
 
-        return models;
+        return models;*/
     }
 }
