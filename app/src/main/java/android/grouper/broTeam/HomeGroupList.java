@@ -1,7 +1,7 @@
 package android.grouper.broTeam;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +12,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -36,69 +35,91 @@ public class HomeGroupList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_group_list);
 
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-
         mRecyclerView = findViewById(R.id.groupRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new GroupCardAdapter(this, getMyList(email));
+        myAdapter = new GroupCardAdapter(this, getMyList());
         mRecyclerView.setAdapter(myAdapter);
     }
 
-    private ArrayList<CardModel> getMyList(String email) {
+    private ArrayList<CardModel> getMyList() {
 
 
         final ArrayList<CardModel> models = new ArrayList<>();
         final ArrayList<String> groups = new ArrayList<>();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        CollectionReference myRef = database.collection("userList/" + user.getUid());
-
-        myRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot document : task.getResult()) {
-                    List<String> list = (List<String>) document.get("groupList");
-                    for (String s : list){
-                        groups.add(s);
+        database.collection("/userList")
+                .whereEqualTo(user.getUid(), true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("myTag", "trying to get groupList");
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                List<String> list = (List<String>) document.get("groupList");
+                                for (String t : list) {
+                                    groups.add(t);
+                                }
+                            }
+                        } else {
+                            // failed
+                            Log.d("failed", "failed to get groups");
+                        }
                     }
-                }
-            }
-        });
-
+                });
+        
         if(groups.size() == 0)
         {
+             CardModel m = new CardModel();
+             m.setTitle("Bro Team");
+             m.setDescription("Just a bunch of bro's");
+             m.setImg(R.drawable.ic_launcher_background);
+             models.add(m);
+
+            CardModel p = new CardModel();
+            p.setTitle("Party team");
+            p.setDescription("Lets get liiiiit");
+            p.setImg(R.drawable.ic_launcher_background);
+            models.add(p);
+
+            CardModel f = new CardModel();
+            f.setTitle("Friends");
+            f.setDescription("Lets help each other out");
+            f.setImg(R.drawable.ic_launcher_background);
+            models.add(f);
+
+            CardModel r = new CardModel();
+            r.setTitle("Roomates");
+            r.setDescription("For keeping the apartment cleen");
+            r.setImg(R.drawable.ic_launcher_background);
+            models.add(r);
             return models;
         }
 
         for(final String gid: groups) {
-            CollectionReference ref = database.collection("groupsList");
-            ref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    for (DocumentSnapshot document : task.getResult()) {
-                        if (document.getId().contentEquals(gid)) {
-                            CardModel m = new CardModel();
-                            m.setTitle(document.get("groupName").toString());
-                            m.setDescription(document.get("description").toString());
-                            m.setImg(R.drawable.ic_launcher_foreground);
-                            models.add(m);
+            database.collection("/groupList")
+                    .whereEqualTo(gid, true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    CardModel m = new CardModel();
+                                    m.setTitle(document.get("groupName").toString());
+                                    m.setDescription(document.get("description").toString());
+                                    m.setImg(R.drawable.ic_launcher_foreground);
+                                    models.add(m);
+                                }
+                            }
                         }
-                    }
-                }
-            });
+                    });
         }
 
-        for(int i = 0; i < 4; i++) {
-            CardModel m = new CardModel();
-            m.setTitle("NewsFeed");
-            m.setDescription("This is a newsfeed description");
-            m.setImg(R.drawable.ic_launcher_background);
-            models.add(m);
-        }
         return models;
     }
 }
