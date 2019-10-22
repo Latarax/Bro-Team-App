@@ -13,5 +13,17 @@
     <string name="submitNewAccountButton">Create Account</string>
     <string name="userAlreadyAccountButton">Already Have Account?</string>
     <string name="action_notification">Notifications</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_description">Task description</string>
+    <string name="task_address">Task address</string>
+    <string name="task_claimant">Task Claimant</string>
+    <string name="group_tasks_item">Tasks</string>
+    <string name="group_nav_item">Way-Points</string>
+    <string name="group_users_item">Users</string>
+    <string name="group_chat_item">Chat</string>
+    <string name="clear_task_button">Clear Task</string>
+    <string name="claim_task_buton">Claim Task</string>
     <string name="no_groups_available">You are not in any groups</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="send">SEND</string>
 </resources>

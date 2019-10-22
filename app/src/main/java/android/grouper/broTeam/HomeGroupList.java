@@ -1,10 +1,20 @@
 package android.grouper.broTeam;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -35,64 +45,60 @@ public class HomeGroupList extends AppCompatActivity {
 
 
         ArrayList<CardModel> models = new ArrayList<>();
-        /*final ArrayList<DocumentReference> groups = new ArrayList<>();
+        ArrayList<DocumentReference> groups = new ArrayList<>();
 
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        Log.d("userid", ""+user.getUid());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference uId = database.collection("userList").document(user.getUid())
+        DocumentReference userId = database.collection("usersList").document(user.getUid());
+         userId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+             @Override
+             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                 if (task.isSuccessful()) {
+                     DocumentSnapshot document = task.getResult();
+                     if (document.exists()) {
+                         Log.d("DocumentSnapshot data: ", "" + document.getData());
+                         if(!document.getData().containsKey("groupList")){
+                             Log.d("no array", "No groupList");
+                         } else {
+                             Log.d("DocumentSnapshot data: ", ""+document.getData());
+                         }
+                         //Object groupArray = document.getData("groupList");
+                         ///Log.d("array object", ""+groupArray);
+                         /*groupArray.get().addOnSuccessListener(new OnCompleteListener<DocumentSnapshot>(){
+                             @Override
+                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                 if(task.isSuccessful())
+                                 {
+                                     DocumentSnapshot a = task.getResult();
+                                     if(a.exists()) {
+                                         Log.d("array", ""+a.getData());
+                                     } else {
+                                         Log.d("no array", "No array");
+                                     }
+                                 }
+                             }
+                         })*/
+                     } else {
+                         Log.d("no field", "No such document");
+                     }
+                 } else {
+                     Log.d("failed to get", "get failed with ", task.getException());
+                 }
+             }
+         });
+
+        /*database.collection("userList").document(user.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful())
-                        {
+                        if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
-                            if(document.exists())
-                            {
-                                List<DocumentReference> list = (List<DocumentReference>) document.get("groupList");
-                                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-                                for(DocumentReference documentReference : list)
-                                {
-                                    Task<DocumentSnapshot> documentSnapshotTask = documentReference.get();
-                                    tasks.add(documentSnapshotTask);
-                                }
+                            Log.d("document snapshot", "" + document.get("email"));
 
-                                Tasks.whenAllSuccess(tasks).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
-                                    @Override
-                                    public void onSuccess(List<Object> list) {
-                                        for(Object object : list){
-                                            Log.d("groups", ""+object.toString());
-                                        }
-                                    }
-                                });
-
-                            }
-                        }
-                    }
-                });
-
-
-
-        //groups.addAll(t);
-                /*.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()) {
-                            Log.d("myTag", "trying to get groupList");
-                            List<Type> types = (List<Type>)documentSnapshot.get("userList");
-                            groups.addAll(types);
                         } else {
-                          Log.d("mytag", "query document is empty");
-                          return;
+                            Log.d("document snapshot", "no such document");
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("mytag", "Error getting groups");
                     }
                 });*/
 
@@ -141,8 +147,8 @@ public class HomeGroupList extends AppCompatActivity {
                             }
                         }
                     });
-        }
+        }*/
 
-        return models;*/
+        //return models;
     }
 }
