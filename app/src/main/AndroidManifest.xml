@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".GroupWaypointDisplay"></activity>
+        <activity android:name=".GroupUsersDisplay"></activity>
+        <activity android:name=".GroupWaypointDisplay" />
         <activity android:name=".GroupChatDisplay" />
         <activity android:name=".GroupTaskDisplay" />
         <activity android:name=".HomeGroupList" />
