@@ -43,7 +43,6 @@ public class HomeGroupList extends AppCompatActivity {
 
     private ArrayList<CardModel> getMyList() {
 
-
         ArrayList<CardModel> models = new ArrayList<>();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,25 +95,25 @@ public class HomeGroupList extends AppCompatActivity {
         CardModel m = new CardModel();
         m.setTitle("Bro Team");
         m.setDescription("Just a bunch of bro's");
-        m.setImg(R.drawable.ic_launcher_background);
+        m.setImg(R.drawable.ic_group_icon_background);
         models.add(m);
 
         CardModel p = new CardModel();
         p.setTitle("Party team");
         p.setDescription("Lets get liiiiit");
-        p.setImg(R.drawable.ic_launcher_background);
+        p.setImg(R.drawable.ic_group_icon_background);
         models.add(p);
 
         CardModel f = new CardModel();
-        f.setTitle("Friends");
+        f.setTitle("Squad");
         f.setDescription("Lets help each other out");
-        f.setImg(R.drawable.ic_launcher_background);
+        f.setImg(R.drawable.ic_group_icon_background);
         models.add(f);
 
         CardModel r = new CardModel();
         r.setTitle("Roommates");
         r.setDescription("For keeping the apartment clean");
-        r.setImg(R.drawable.ic_launcher_background);
+        r.setImg(R.drawable.ic_group_icon_background);
         models.add(r);
 
         return models;
