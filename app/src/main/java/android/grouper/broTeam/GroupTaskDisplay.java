@@ -3,19 +3,22 @@ package android.grouper.broTeam;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class GroupTaskDisplay extends AppCompatActivity {
 
-    TextView mTitleTv, mDescTv;
-    ImageView mImageV;
+    RecyclerView mRecyclerView;
+    TaskCardAdapter myAdapter;
+    String mTitle, mDescription;
     BottomNavigationView navigation;
 
     @Override
@@ -23,18 +26,17 @@ public class GroupTaskDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_task_display);
 
-        ActionBar actionBar = getSupportActionBar();
-
-        mTitleTv = findViewById(R.id.titleIv);
-
         Intent intent = getIntent();
 
-        String mTitle = intent.getStringExtra("iTitle");
+        mTitle = intent.getStringExtra("iTitle");
 
-        actionBar.setTitle(mTitle);
+        mDescription = intent.getStringExtra("iDescription");
 
-        mTitleTv.setText(mTitle);
+        mRecyclerView = findViewById(R.id.groupRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        myAdapter = new TaskCardAdapter(this, getMyList());
+        mRecyclerView.setAdapter(myAdapter);
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
@@ -62,5 +64,19 @@ public class GroupTaskDisplay extends AppCompatActivity {
                 return false;
             }
         });
+
+    }
+
+    private ArrayList<CardModel> getMyList() {
+
+        ArrayList<CardModel> models = new ArrayList<>();
+
+        CardModel m = new CardModel();
+        m.setTitle(mTitle);
+        m.setDescription(mDescription);
+        m.setImg(R.drawable.ic_group_member_background);
+        models.add(m);
+
+        return models;
     }
 }

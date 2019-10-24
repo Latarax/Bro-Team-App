@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <!--This is the item info for the tasks button -->
     <item
         android:id="@+id/groupTasksItem"
         android:title="@string/group_tasks_item"
-        android:icon="@drawable/ic_group_tasks"/>
+        android:icon="@drawable/ic_group_tasks"
+        android:enabled= "true"
+        />
 
     <!-- this is the item for the nav button -->
     <item
         android:id="@+id/groupNavItem"
         android:title="@string/group_nav_item"
-        android:icon="@drawable/ic_group_map"/>
+        android:icon="@drawable/ic_group_map"
+        android:enabled= "true"
+        />
 
     <!-- this is the item for the users button -->
     <item
         android:id="@+id/groupUsersItem"
         android:title="@string/group_users_item"
-        android:icon="@drawable/ic_group_users" />
+        android:icon="@drawable/ic_group_users"
+        android:enabled= "true"
+        />
 
     <!-- this is the item for the chat button -->
     <item
         android:id="@+id/groupChatItem"
         android:title="@string/group_chat_item"
-        android:icon="@drawable/ic_group_chat" />
-</menu>
+        android:icon="@drawable/ic_group_chat"
+        android:enabled= "true"
+        />
 
+</menu>
