@@ -26,4 +26,5 @@
     <string name="no_groups_available">You are not in any groups</string>
     <string name="enter_message">Enter Message</string>
     <string name="send">SEND</string>
+    <string name="title_activity_group_waypoint_display">Map</string>
 </resources>
