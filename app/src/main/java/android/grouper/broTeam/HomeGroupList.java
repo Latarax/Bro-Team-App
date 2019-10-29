@@ -67,11 +67,11 @@ public class HomeGroupList extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 Log.d("task group call", ""+task.getResult());
                 if (task.isSuccessful()) {
-                    final DocumentSnapshot document = task.getResult(); // get snapshot of user details
+                    DocumentSnapshot document = task.getResult(); // get snapshot of user details
                     Log.d("DocumentSnapshot data: ", "" + document.getData());
 
                     // cast group list into array of references
-                    final ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
+                    ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
 
                     // go through list and get group details
                     for(int i = 0; i < groups.size(); i++){
