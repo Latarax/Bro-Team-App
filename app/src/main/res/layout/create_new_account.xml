@@ -8,8 +8,8 @@
 
     <EditText
         android:id="@+id/newUsernameEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:hint="@string/newUsernameTitle"
         android:inputType="textCapSentences"
         app:layout_constraintBottom_toTopOf="@+id/newEmailEntry"
@@ -18,8 +18,8 @@
 
     <EditText
         android:id="@+id/newEmailEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:hint="@string/newUserEmailTitle"
         android:inputType="textCapSentences"
         app:layout_constraintBottom_toTopOf="@+id/newPasswordEntry"
@@ -28,8 +28,8 @@
 
     <EditText
         android:id="@+id/newPasswordEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:hint="@string/newPasswordTitle"
         android:inputType="textPassword"
@@ -41,8 +41,8 @@
 
     <EditText
         android:id="@+id/newPassVerifEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:hint="@string/verifPasswordTitle"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/submitAccountButton"
@@ -79,5 +79,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/haveAccountButton"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="208dp"
+        android:layout_height="55dp"
+        android:text="Welcome!"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/newUsernameEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="186dp"
+        android:layout_height="54dp"
+        android:text="Let's get you started."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/newUsernameEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
