@@ -28,71 +28,89 @@ public class HomeGroupList extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     GroupCardAdapter myAdapter;
+    ArrayList<CardModel> models = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_group_list);
 
-        mRecyclerView = findViewById(R.id.groupRecyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView = findViewById(R.id.groupRecyclerView); // get container for cards
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); //set layout
 
-        myAdapter = new GroupCardAdapter(this, getMyList());
-        mRecyclerView.setAdapter(myAdapter);
+        getMyList(); // get list of groups from database and make cards in them
+        Log.d("test", "Finished getting groups");
+
+        myAdapter = new GroupCardAdapter(this, models); //set adapter objects and onclick listeners
+        mRecyclerView.setAdapter(myAdapter); // put all cards on display
     }
 
-    private ArrayList<CardModel> getMyList() {
+    //This will grab all the groups the current user is enrolled in and make cards
+    //to be displayed
+    public void getMyList() {
 
-        ArrayList<CardModel> models = new ArrayList<>();
-
+        // get user instance and database reference
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
+        // get pointer to user document in database
         DocumentReference userId = database.collection("usersList").document(user.getUid());
+
+        // get list of groups via task
         userId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 Log.d("task group call", ""+task.getResult());
                 if (task.isSuccessful()) {
-                    final DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("DocumentSnapshot data: ", "" + document.getData());
-                        if(!document.getData().containsKey("groupList")){
-                            Log.d("no array", "No groupList");
+                    DocumentSnapshot document = task.getResult(); // get snapshot of user details
+                    Log.d("DocumentSnapshot data: ", "" + document.getData());
 
-                        } else {
+                    // cast group list into array of references
+                    ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
 
-                            //Map<String, Object> data = document.getData();
-                            ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
+                    // go through list and get group details
+                    for(int i = 0; i < groups.size(); i++){
 
-                            for(int i = 0; i < groups.size(); i++){
+                        Log.d("group index", ""+groups.get(i).getId());
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        DocumentReference groupId = db.collection("groupsList").document(groups.get(i).getId());
 
-                                Log.d("group index", ""+groups.get(i).getId());
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                DocumentReference groupId = db.collection("groupsList").document(groups.get(i).getId());
+                        // go into group and get group details
+                        groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> t) {
+                                if(t.isSuccessful()){
 
-                                groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> t) {
-                                        if(t.isSuccessful()){
-                                            Log.d("task group call", ""+t.getResult());
-                                            DocumentSnapshot documentSnapshot = t.getResult();
-                                            Log.d("DocumentSnapshot group", ""+documentSnapshot.getData());
-                                        }
-                                    }
-                                });
+                                    Log.d("task group call", ""+t.getResult());
+                                    DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
+                                    Log.d("DocumentSnapshot group", ""+documentSnapshot.getData());
+
+                                    // extract title and description
+                                    String gTitle = (String) documentSnapshot.get("groupName");
+                                    String description = (String) documentSnapshot.get("description");
+
+                                    Log.d("Card list", ""+models);
+                                    makeCard(gTitle, description); //make extracted details into cards
+                                }
                             }
-                        }
-                    } else {
-                        Log.d("no field", "No such document");
+                        });
                     }
-                } else {
+                } else { // TO-DO: If no groups, display default cards
                     Log.d("failed to get", "get failed with ", task.getException());
+                    String gTitle = "You're not in any groups :(";
+                    String description = "Either create or join groups for more";
+
+                    CardModel m = new CardModel();
+                    m.setTitle(gTitle);
+                    m.setDescription(description);
+                    m.setImg(R.drawable.ic_group_icon_background);
+                    models.add(m);
                 }
             }
         });
 
-        CardModel m = new CardModel();
+
+        /*CardModel m = new CardModel();
         m.setTitle("Bro Team");
         m.setDescription("Just a bunch of bro's");
         m.setImg(R.drawable.ic_group_icon_background);
@@ -114,8 +132,18 @@ public class HomeGroupList extends AppCompatActivity {
         r.setTitle("Roommates");
         r.setDescription("For keeping the apartment clean");
         r.setImg(R.drawable.ic_group_icon_background);
-        models.add(r);
+        models.add(r);*/
 
-        return models;
+        //return models;
+    }
+
+    // Will make a card with the passed group details
+    public void makeCard(String title, String description){
+        CardModel m = new CardModel();
+        m.setTitle(title);
+        m.setDescription(description);
+        m.setImg(R.drawable.ic_group_icon_background);
+        models.add(m);
+        Log.d("Card list", ""+models);
     }
 }

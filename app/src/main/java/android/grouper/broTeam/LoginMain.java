@@ -95,6 +95,7 @@ public class LoginMain extends AppCompatActivity {
                     goToHome.putExtra("email", usernameField.getText());
                     goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(goToHome);
+                    finish();
                 }
 
                 else {
