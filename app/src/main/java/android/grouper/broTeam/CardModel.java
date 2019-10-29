@@ -5,7 +5,7 @@ import android.view.View;
 public class CardModel {
 
     private View.OnClickListener onClickListener;
-    private String title, description;
+    private String title, description, groupId;
     private int img;
 
     public String getTitle(){
@@ -20,6 +20,8 @@ public class CardModel {
         return img;
     }
 
+    public String getGroupID(){ return groupId; }
+
     public void setTitle(String title){
         this.title = title;
     }
@@ -31,5 +33,7 @@ public class CardModel {
     public void setImg(int img) {
         this.img = img;
     }
+
+    public void setGroupId(String gid){this.groupId = gid; }
 }
 

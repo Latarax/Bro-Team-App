@@ -2,6 +2,8 @@ package android.grouper.broTeam;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class HomeGroupList extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     GroupCardAdapter myAdapter;
+    ProgressBar progressBar;
     ArrayList<CardModel> models = new ArrayList<>();
 
     @Override
@@ -37,6 +40,7 @@ public class HomeGroupList extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.groupRecyclerView); // get container for cards
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); //set layout
+        progressBar = findViewById(R.id.progressBar);
 
         getMyList(); // get list of groups from database and make cards in them
         Log.d("test", "Finished getting groups");
@@ -56,24 +60,26 @@ public class HomeGroupList extends AppCompatActivity {
         // get pointer to user document in database
         DocumentReference userId = database.collection("usersList").document(user.getUid());
 
+        progressBar.setVisibility(View.VISIBLE);
         // get list of groups via task
         userId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 Log.d("task group call", ""+task.getResult());
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult(); // get snapshot of user details
+                    final DocumentSnapshot document = task.getResult(); // get snapshot of user details
                     Log.d("DocumentSnapshot data: ", "" + document.getData());
 
                     // cast group list into array of references
-                    ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
+                    final ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
 
                     // go through list and get group details
                     for(int i = 0; i < groups.size(); i++){
 
-                        Log.d("group index", ""+groups.get(i).getId());
+                        final String gid = groups.get(i).getId();
+                        Log.d("group index", ""+gid);
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        DocumentReference groupId = db.collection("groupsList").document(groups.get(i).getId());
+                        DocumentReference groupId = db.collection("groupsList").document(gid);
 
                         // go into group and get group details
                         groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -90,11 +96,14 @@ public class HomeGroupList extends AppCompatActivity {
                                     String description = (String) documentSnapshot.get("description");
 
                                     Log.d("Card list", ""+models);
-                                    makeCard(gTitle, description); //make extracted details into cards
+                                    makeCard(gTitle, description, gid); //make extracted details into cards
                                 }
                             }
                         });
                     }
+
+                    progressBar.setVisibility(View.GONE);
+
                 } else { // TO-DO: If no groups, display default cards
                     Log.d("failed to get", "get failed with ", task.getException());
                     String gTitle = "You're not in any groups :(";
@@ -108,42 +117,16 @@ public class HomeGroupList extends AppCompatActivity {
                 }
             }
         });
-
-
-        /*CardModel m = new CardModel();
-        m.setTitle("Bro Team");
-        m.setDescription("Just a bunch of bro's");
-        m.setImg(R.drawable.ic_group_icon_background);
-        models.add(m);
-
-        CardModel p = new CardModel();
-        p.setTitle("Party team");
-        p.setDescription("Lets get liiiiit");
-        p.setImg(R.drawable.ic_group_icon_background);
-        models.add(p);
-
-        CardModel f = new CardModel();
-        f.setTitle("Squad");
-        f.setDescription("Lets help each other out");
-        f.setImg(R.drawable.ic_group_icon_background);
-        models.add(f);
-
-        CardModel r = new CardModel();
-        r.setTitle("Roommates");
-        r.setDescription("For keeping the apartment clean");
-        r.setImg(R.drawable.ic_group_icon_background);
-        models.add(r);*/
-
-        //return models;
     }
 
     // Will make a card with the passed group details
-    public void makeCard(String title, String description){
+    public void makeCard(String title, String description, String gid){
         CardModel m = new CardModel();
         m.setTitle(title);
         m.setDescription(description);
         m.setImg(R.drawable.ic_group_icon_background);
+        m.setGroupId(gid);
         models.add(m);
-        Log.d("Card list", ""+models);
+        Log.d("Card list", ""+myAdapter.cardModels);
     }
 }
