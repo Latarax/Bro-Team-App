@@ -65,6 +65,24 @@ public class GroupTaskDisplay extends AppCompatActivity {
         uAdapter = new TaskCardAdapter(this, uModels);
         aAdapter = new TaskCardAdapter(this, aModels);
 
+        /*if(!(mModels.size() > 0)){
+            String title = "No Tasks Assigned to You";
+            String description = "";
+            makeCardMy(title, description, null);
+        }
+
+        if(!(uModels.size() > 0)){
+            String title = "No Unassigned Tasks";
+            String description = "";
+            makeCardUnassigned(title, description, null);
+        }
+
+        if(!(aModels.size() > 0)){
+            String title = "No Assigned Tasks";
+            String description = "";
+            makeCardUnassigned(title, description, null);
+        }*/
+
         mRecyclerView.setAdapter(myAdapter);
         uRecyclerView.setAdapter(uAdapter);
         aRecyclerView.setAdapter(aAdapter);

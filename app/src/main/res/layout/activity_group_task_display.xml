@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:padding="16dp"
-    tools:context=".GroupTaskDisplay">
+    tools:context=".GroupTaskDisplay"
+    tools:layout_editor_absoluteY="81dp">
+
 
     <ProgressBar
         android:id="@+id/progressBar"

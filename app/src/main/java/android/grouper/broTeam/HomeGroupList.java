@@ -72,48 +72,45 @@ public class HomeGroupList extends AppCompatActivity {
 
                     // cast group list into array of references
                     ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) document.get("groupList");
+                    if(groups.size() > 0) {
+                        // go through list and get group details
+                        for (int i = 0; i < groups.size(); i++) {
 
-                    // go through list and get group details
-                    for(int i = 0; i < groups.size(); i++){
+                            final String gid = groups.get(i).getId();
+                            Log.d("group index", "" + gid);
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference groupId = db.collection("groupsList").document(gid);
 
-                        final String gid = groups.get(i).getId();
-                        Log.d("group index", ""+gid);
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        DocumentReference groupId = db.collection("groupsList").document(gid);
+                            // go into group and get group details
+                            groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> t) {
+                                    if (t.isSuccessful()) {
 
-                        // go into group and get group details
-                        groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> t) {
-                                if(t.isSuccessful()){
+                                        Log.d("task group call", "" + t.getResult());
+                                        DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
+                                        Log.d("DocumentSnapshot group", "" + documentSnapshot.getData());
 
-                                    Log.d("task group call", ""+t.getResult());
-                                     DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
-                                    Log.d("DocumentSnapshot group", ""+documentSnapshot.getData());
+                                        // extract title and description
+                                        String gTitle = (String) documentSnapshot.get("groupName");
+                                        String description = (String) documentSnapshot.get("description");
 
-                                    // extract title and description
-                                    String gTitle = (String) documentSnapshot.get("groupName");
-                                    String description = (String) documentSnapshot.get("description");
-
-                                    Log.d("Card list", ""+models);
-                                    makeCard(gTitle, description, gid); //make extracted details into cards
+                                        Log.d("Card list", "" + models);
+                                        makeCard(gTitle, description, gid); //make extracted details into cards
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        String gTitle = "You're not in any groups :(";
+                        String description = "Create or join groups for more";
+                        makeCard(gTitle, description, null);
                     }
-
-                    progressBar.setVisibility(View.GONE);
-
                 } else { // TO-DO: If no groups, display default cards
                     Log.d("failed to get", "get failed with ", task.getException());
-                    String gTitle = "You're not in any groups :(";
-                    String description = "Either create or join groups for more";
-
-                    CardModel m = new CardModel();
-                    m.setTitle(gTitle);
-                    m.setDescription(description);
-                    m.setImg(R.drawable.ic_group_icon_background);
-                    models.add(m);
                 }
             }
         });
