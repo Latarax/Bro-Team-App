@@ -124,7 +124,7 @@ public class HomeGroupList extends AppCompatActivity {
         CardModel m = new CardModel();
         m.setTitle(title);
         m.setDescription(description);
-        m.setImg(R.drawable.ic_group_icon_background);
+        m.setImg(R.mipmap.ic_group_icon_round);
         m.setGroupId(gid);
         models.add(m);
         myAdapter.notifyDataSetChanged();

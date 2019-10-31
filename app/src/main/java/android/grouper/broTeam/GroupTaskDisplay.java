@@ -21,8 +21,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class GroupTaskDisplay extends AppCompatActivity {
 
@@ -102,95 +105,67 @@ public class GroupTaskDisplay extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         // get pointer to user document in database
-        DocumentReference groupId = database.collection("usersList").document(mGroupId);
+        CollectionReference taskCollection = database.collection("groupsList/"+mGroupId+"/tasks");
+        Log.d("Task Collection", ""+taskCollection.getPath());
 
         progressBar.setVisibility(View.VISIBLE);
-        // get list of groups via task
-        groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        taskCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                Log.d("task group call", ""+task.getResult());
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult(); // get snapshot of user details
-                    Log.d("DocumentSnapshot data: ", "" + document.getData());
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    Log.d("Query Snapshot", ""+querySnapshot.getDocuments());
 
-                    // cast group list into array of references
-                    ArrayList<CollectionReference> groups = (ArrayList<CollectionReference>) document.get("tasks");
+                    List<DocumentSnapshot> taskList = querySnapshot.getDocuments();
+                    Log.d("List object", ""+taskList);
 
-                    // go through list and get group details
-                    for(int i = 0; i < groups.size(); i++){
+                    for (DocumentSnapshot documentSnapshot : taskList) {
+                        Log.d("List Item", ""+documentSnapshot.getData());
+                        Map<String, Object> data= documentSnapshot.getData();
+                        String tTitle = data.get("taskName").toString();
+                        String description = data.get("description").toString();
+                        DocumentReference userRef = (DocumentReference) data.get("assignedUser");
+                        String assignedUser = userRef.getId();
+                        String tid = documentSnapshot.getId();
 
-                        final String tid = groups.get(i).getId();
-                        Log.d("group index", ""+tid);
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        DocumentReference groupId = db.collection("groupsList").document(tid);
+                        Log.d("Document Values", ""+tTitle+" "+description+" "+assignedUser+" "+tid+" "+user.getUid());
 
-                        // go into group and get group details
-                        groupId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> t) {
-                                if(t.isSuccessful()){
-
-                                    Log.d("task group call", ""+t.getResult());
-                                    DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
-                                    Log.d("DocumentSnapshot group", ""+documentSnapshot.getData());
-
-                                    // extract title and description
-                                    String tTitle = (String) documentSnapshot.get("taskName");
-                                    String description = (String) documentSnapshot.get("description");
-                                    String assignedUser = (String) documentSnapshot.get("assignedUser");
-
-                                    if(assignedUser.contentEquals("dummyUser")){
-                                        makeCardUnassigned(tTitle, description, tid);
-                                    } else if(assignedUser.contentEquals(user.getUid())) {
-                                        makeCardMy(tTitle, description, tid); //make extracted details into cards
-                                    } else {
-                                        makeCardAssigned(tTitle, description, tid);
-                                    }
-                                }
-                            }
-                        });
+                        if(assignedUser.contentEquals("dummyUser")){
+                            makeCardUnassigned(tTitle, description, tid);
+                        } else if(assignedUser.contentEquals(user.getUid())) {
+                            makeCardMy(tTitle, description, tid);
+                        } else {
+                            makeCardAssigned(tTitle, description, tid);
+                        }
                     }
-
                     progressBar.setVisibility(View.GONE);
-
-                } else { // TO-DO: If no groups, display default cards
-                    Log.d("failed to get", "get failed with ", task.getException());
-                    String gTitle = "You're not in any groups :(";
-                    String description = "Either create or join groups for more";
-
-                    CardModel m = new CardModel();
-                    m.setTitle(gTitle);
-                    m.setDescription(description);
-                    m.setImg(R.drawable.ic_group_icon_background);
-                    mModels.add(m);
                 }
             }
         });
     }
 
     // Will make a card with the passed group details
-    public void makeCardMy(String title, String description, String gid){
+    public void makeCardMy(String title, String description, String tid){
         CardModel m = new CardModel();
         m.setTitle(title);
         m.setDescription(description);
-        m.setImg(R.drawable.ic_group_icon_background);
-        m.setGroupId(gid);
+        m.setImg(R.mipmap.ic_group_member_round);
+        m.setGroupId(tid);
         mModels.add(m);
         myAdapter.notifyDataSetChanged();
         Log.d("Card list", ""+myAdapter.cardModels);
     }
 
     // Will make a card with the passed group details
-    public void makeCardUnassigned(String title, String description, String gid){
+    public void makeCardUnassigned(String title, String description, String tid){
         CardModel m = new CardModel();
         m.setTitle(title);
         m.setDescription(description);
-        m.setImg(R.drawable.ic_group_icon_background);
-        m.setGroupId(gid);
+        m.setImg(R.mipmap.ic_group_member_round);
+        m.setGroupId(tid);
         uModels.add(m);
         uAdapter.notifyDataSetChanged();
-        Log.d("Card list", ""+myAdapter.cardModels);
+        Log.d("Card list", ""+uAdapter.cardModels);
     }
 
     // Will make a card with the passed group details
@@ -198,10 +173,10 @@ public class GroupTaskDisplay extends AppCompatActivity {
         CardModel m = new CardModel();
         m.setTitle(title);
         m.setDescription(description);
-        m.setImg(R.drawable.ic_group_icon_background);
+        m.setImg(R.mipmap.ic_group_member_round);
         m.setGroupId(tid);
         aModels.add(m);
         aAdapter.notifyDataSetChanged();
-        Log.d("Card list", ""+myAdapter.cardModels);
+        Log.d("Card list", ""+aAdapter.cardModels);
     }
 }
