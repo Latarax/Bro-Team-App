@@ -38,7 +38,7 @@ public class HomeGroupList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_group_list);
 
-        mRecyclerView = findViewById(R.id.groupRecyclerView); // get container for cards
+        mRecyclerView = findViewById(R.id.myTaskRecyclerView); // get container for cards
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); //set layout
         progressBar = findViewById(R.id.progressBar);
 
@@ -88,7 +88,7 @@ public class HomeGroupList extends AppCompatActivity {
                                 if(t.isSuccessful()){
 
                                     Log.d("task group call", ""+t.getResult());
-                                    DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
+                                     DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
                                     Log.d("DocumentSnapshot group", ""+documentSnapshot.getData());
 
                                     // extract title and description
@@ -127,6 +127,7 @@ public class HomeGroupList extends AppCompatActivity {
         m.setImg(R.drawable.ic_group_icon_background);
         m.setGroupId(gid);
         models.add(m);
+        myAdapter.notifyDataSetChanged();
         Log.d("Card list", ""+myAdapter.cardModels);
     }
 }
