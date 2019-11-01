@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/homeMainDivider" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/groupRecyclerView"
+        android:id="@+id/myTaskRecyclerView"
         android:layout_width="411dp"
         android:layout_height="550dp"
         android:background="#00FFFFFF"

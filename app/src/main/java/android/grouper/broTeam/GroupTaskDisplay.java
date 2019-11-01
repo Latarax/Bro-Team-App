@@ -2,23 +2,41 @@ package android.grouper.broTeam;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class GroupTaskDisplay extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
-    TaskCardAdapter myAdapter;
-    String mTitle, mDescription;
+    RecyclerView mRecyclerView, uRecyclerView, aRecyclerView;
+    TaskCardAdapter myAdapter, uAdapter, aAdapter;
+    String mGroupId;
+    ProgressBar progressBar;
+
+    ArrayList<CardModel> mModels = new ArrayList<>();
+    ArrayList<CardModel> uModels = new ArrayList<>();
+    ArrayList<CardModel> aModels = new ArrayList<>();
     BottomNavigationView navigation;
 
     @Override
@@ -28,15 +46,46 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        mTitle = intent.getStringExtra("iTitle");
+        mGroupId = intent.getStringExtra("iGroupId");
 
-        mDescription = intent.getStringExtra("iDescription");
-
-        mRecyclerView = findViewById(R.id.groupRecyclerView);
+        mRecyclerView = findViewById(R.id.myTaskRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new TaskCardAdapter(this, getMyList());
+        uRecyclerView = findViewById(R.id.unassignedRecyclerView);
+        uRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        aRecyclerView = findViewById(R.id.assignedRecyclerView);
+        aRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        progressBar = findViewById(R.id.progressBar);
+
+        getMyList();
+
+        myAdapter = new TaskCardAdapter(this, mModels);
+        uAdapter = new TaskCardAdapter(this, uModels);
+        aAdapter = new TaskCardAdapter(this, aModels);
+
+        /*if(!(mModels.size() > 0)){
+            String title = "No Tasks Assigned to You";
+            String description = "";
+            makeCardMy(title, description, null);
+        }
+
+        if(!(uModels.size() > 0)){
+            String title = "No Unassigned Tasks";
+            String description = "";
+            makeCardUnassigned(title, description, null);
+        }
+
+        if(!(aModels.size() > 0)){
+            String title = "No Assigned Tasks";
+            String description = "";
+            makeCardUnassigned(title, description, null);
+        }*/
+
         mRecyclerView.setAdapter(myAdapter);
+        uRecyclerView.setAdapter(uAdapter);
+        aRecyclerView.setAdapter(aAdapter);
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
@@ -67,16 +116,85 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
     }
 
-    private ArrayList<CardModel> getMyList() {
+    private void getMyList() {
 
-        ArrayList<CardModel> models = new ArrayList<>();
+        // get user instance and database reference
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
 
+        // get pointer to user document in database
+        CollectionReference taskCollection = database.collection("groupsList/"+mGroupId+"/tasks");
+        Log.d("Task Collection", ""+taskCollection.getPath());
+
+        progressBar.setVisibility(View.VISIBLE);
+        taskCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    Log.d("Query Snapshot", ""+querySnapshot.getDocuments());
+
+                    List<DocumentSnapshot> taskList = querySnapshot.getDocuments();
+                    Log.d("List object", ""+taskList);
+
+                    for (DocumentSnapshot documentSnapshot : taskList) {
+                        Log.d("List Item", ""+documentSnapshot.getData());
+                        Map<String, Object> data= documentSnapshot.getData();
+                        String tTitle = data.get("taskName").toString();
+                        String description = data.get("description").toString();
+                        DocumentReference userRef = (DocumentReference) data.get("assignedUser");
+                        String assignedUser = userRef.getId();
+                        String tid = documentSnapshot.getId();
+
+                        Log.d("Document Values", ""+tTitle+" "+description+" "+assignedUser+" "+tid+" "+user.getUid());
+
+                        if(assignedUser.contentEquals("dummyUser")){
+                            makeCardUnassigned(tTitle, description, tid);
+                        } else if(assignedUser.contentEquals(user.getUid())) {
+                            makeCardMy(tTitle, description, tid);
+                        } else {
+                            makeCardAssigned(tTitle, description, tid);
+                        }
+                    }
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    // Will make a card with the passed group details
+    public void makeCardMy(String title, String description, String tid){
         CardModel m = new CardModel();
-        m.setTitle(mTitle);
-        m.setDescription(mDescription);
-        m.setImg(R.drawable.ic_group_member_background);
-        models.add(m);
+        m.setTitle(title);
+        m.setDescription(description);
+        m.setImg(R.mipmap.ic_group_member_round);
+        m.setGroupId(tid);
+        mModels.add(m);
+        myAdapter.notifyDataSetChanged();
+        Log.d("Card list", ""+myAdapter.cardModels);
+    }
 
-        return models;
+    // Will make a card with the passed group details
+    public void makeCardUnassigned(String title, String description, String tid){
+        CardModel m = new CardModel();
+        m.setTitle(title);
+        m.setDescription(description);
+        m.setImg(R.mipmap.ic_group_member_round);
+        m.setGroupId(tid);
+        uModels.add(m);
+        uAdapter.notifyDataSetChanged();
+        Log.d("Card list", ""+uAdapter.cardModels);
+    }
+
+    // Will make a card with the passed group details
+    public void makeCardAssigned(String title, String description, String tid){
+        CardModel m = new CardModel();
+        m.setTitle(title);
+        m.setDescription(description);
+        m.setImg(R.mipmap.ic_group_member_round);
+        m.setGroupId(tid);
+        aModels.add(m);
+        aAdapter.notifyDataSetChanged();
+        Log.d("Card list", ""+aAdapter.cardModels);
     }
 }
