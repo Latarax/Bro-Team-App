@@ -1,8 +1,9 @@
 package android.grouper.broTeam;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateNewGroup extends AppCompatActivity {
 
@@ -10,5 +11,6 @@ public class CreateNewGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_group);
+        Intent intent = getIntent();
     }
 }

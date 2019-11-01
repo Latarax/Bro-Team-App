@@ -13,11 +13,11 @@
         android:layout_marginTop="16dp"
         android:text="Create Group"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/createGroupBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/createGroupBtn"
         android:layout_width="30dp"
         android:layout_height="28dp"
         android:layout_marginTop="16dp"
