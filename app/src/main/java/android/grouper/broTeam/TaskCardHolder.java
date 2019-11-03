@@ -16,9 +16,9 @@ public class TaskCardHolder extends RecyclerView.ViewHolder implements View.OnCl
     TaskCardHolder(@NonNull View itemView) {
         super(itemView);
 
-        this.mDescription = itemView.findViewById(R.id.descriptionIv);
-        this.mTitle = itemView.findViewById(R.id.titleIv);
-        this.mImgView = itemView.findViewById(R.id.imageIv);
+        this.mDescription = itemView.findViewById(R.id.descriptionIvTask);
+        this.mTitle = itemView.findViewById(R.id.titleIvTask);
+        this.mImgView = itemView.findViewById(R.id.imageIvTask);
 
         itemView.setOnClickListener(this);
     }

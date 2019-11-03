@@ -30,7 +30,7 @@ public class CreateNewGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_group);
-        Intent intent = getIntent();
+        // Intent intent = getIntent();
 
         gTitle = findViewById(R.id.groupTitleInput);
         gDescription = findViewById(R.id.groupDescriptionInput);
@@ -89,6 +89,7 @@ public class CreateNewGroup extends AppCompatActivity {
             public void onSuccess(final DocumentReference documentReference) {
                 Log.d("Document created", documentReference.getId());
                 CollectionReference taskCollection = database.collection("groupsList").document(documentReference.getId()).collection("tasks");
+
                 Map<String, Object> tasks = new HashMap<>();
                 tasks.put("assignedUser", userId);
                 tasks.put("taskName", "Congrats on your new group!");
@@ -96,6 +97,7 @@ public class CreateNewGroup extends AppCompatActivity {
                 tasks.put("isDone", false);
                 tasks.put("location", "");
                 taskCollection.add(tasks);
+
                 userId.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {

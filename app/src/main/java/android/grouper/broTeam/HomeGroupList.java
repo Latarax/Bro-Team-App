@@ -133,7 +133,7 @@ public class HomeGroupList extends AppCompatActivity {
         m.setTitle(title);
         m.setDescription(description);
         m.setImg(R.mipmap.ic_group_icon_round);
-        m.setGroupId(gid);
+        m.setIdentification(gid);
         models.add(m);
         myAdapter.notifyDataSetChanged();
         Log.d("Card list", ""+myAdapter.cardModels);

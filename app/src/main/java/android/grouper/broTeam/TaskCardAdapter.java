@@ -1,6 +1,7 @@
 package android.grouper.broTeam;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,26 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TaskCardAdapter extends RecyclerView.Adapter<GroupCardHolder> {
+public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardHolder> {
     Context context;
-    ArrayList<CardModel> cardModels;
+    ArrayList<TaskCardModel> cardModels;
 
-    public TaskCardAdapter(Context context, ArrayList<CardModel> cardModels){
+    public TaskCardAdapter(Context context, ArrayList<TaskCardModel> taskCardModels){
         this.context = context;
-        this.cardModels = cardModels;
+        this.cardModels = taskCardModels;
     }
 
     @NonNull
     @Override
-    public GroupCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TaskCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_vew, null);
 
-        return new GroupCardHolder(view);
+        return new TaskCardHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupCardHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TaskCardHolder holder, int position) {
         holder.mTitle.setText(cardModels.get(position).getTitle());
         holder.mDescription.setText(cardModels.get(position).getDescription());
         holder.mImgView.setImageResource(cardModels.get(position).getImg());
@@ -37,12 +38,16 @@ public class TaskCardAdapter extends RecyclerView.Adapter<GroupCardHolder> {
         holder.setCardClickListener(new cardClickListener() {
             @Override
             public void onCardClickListener(View v, int position) {
-                /*String groupName = cardModels.get(position).getTitle();
+                String groupName = cardModels.get(position).getTitle();
                 String description = cardModels.get(position).getDescription();
-                Intent intent = new Intent(context, GroupTaskDisplay.class);
-                intent.putExtra("iTitle", groupName);
-                intent.putExtra("iDescription", description);
-                context.startActivity(intent);*/
+                String taskId = cardModels.get(position).getTaskId();
+                String groupId = cardModels.get(position).getGroupId();
+                Intent goToTaskEdit = new Intent(context, EditGroupTask.class);
+                goToTaskEdit.putExtra("iTitle", groupName);
+                goToTaskEdit.putExtra("iDescription", description);
+                goToTaskEdit.putExtra("iTaskId", taskId);
+                goToTaskEdit.putExtra("iGroupId", groupId);
+                context.startActivity(goToTaskEdit);
             }
         });
     }

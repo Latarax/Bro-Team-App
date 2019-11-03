@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,10 +34,11 @@ public class GroupTaskDisplay extends AppCompatActivity {
     TaskCardAdapter myAdapter, uAdapter, aAdapter;
     String mGroupId;
     ProgressBar progressBar;
+    TextView mNoTasks, uNoTasks, aNoTasks;
 
-    ArrayList<CardModel> mModels = new ArrayList<>();
-    ArrayList<CardModel> uModels = new ArrayList<>();
-    ArrayList<CardModel> aModels = new ArrayList<>();
+    ArrayList<TaskCardModel> mModels = new ArrayList<>();
+    ArrayList<TaskCardModel> uModels = new ArrayList<>();
+    ArrayList<TaskCardModel> aModels = new ArrayList<>();
     BottomNavigationView navigation;
 
     @Override
@@ -59,29 +61,15 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
+        mNoTasks = findViewById(R.id.no_tasks_myassigned);
+        uNoTasks = findViewById(R.id.no_tasks_unassigned);
+        aNoTasks = findViewById(R.id.no_tasks_assigned);
+
         getMyList();
 
         myAdapter = new TaskCardAdapter(this, mModels);
         uAdapter = new TaskCardAdapter(this, uModels);
         aAdapter = new TaskCardAdapter(this, aModels);
-
-        /*if(!(mModels.size() > 0)){
-            String title = "No Tasks Assigned to You";
-            String description = "";
-            makeCardMy(title, description, null);
-        }
-
-        if(!(uModels.size() > 0)){
-            String title = "No Unassigned Tasks";
-            String description = "";
-            makeCardUnassigned(title, description, null);
-        }
-
-        if(!(aModels.size() > 0)){
-            String title = "No Assigned Tasks";
-            String description = "";
-            makeCardUnassigned(title, description, null);
-        }*/
 
         mRecyclerView.setAdapter(myAdapter);
         uRecyclerView.setAdapter(uAdapter);
@@ -120,6 +108,8 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
     private void getMyList() {
 
+
+        progressBar.setVisibility(View.VISIBLE);
         // get user instance and database reference
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -128,7 +118,6 @@ public class GroupTaskDisplay extends AppCompatActivity {
         CollectionReference taskCollection = database.collection("groupsList/"+mGroupId+"/tasks");
         Log.d("Task Collection", ""+taskCollection.getPath());
 
-        progressBar.setVisibility(View.VISIBLE);
         taskCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -158,6 +147,16 @@ public class GroupTaskDisplay extends AppCompatActivity {
                             makeCardAssigned(tTitle, description, tid);
                         }
                     }
+
+                    if(mModels.isEmpty()){
+                        mNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if (uModels.isEmpty()){
+                        uNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if (aModels.isEmpty()){
+                        aNoTasks.setVisibility(View.VISIBLE);
+                    }
                     progressBar.setVisibility(View.GONE);
                 }
             }
@@ -166,37 +165,37 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
     // Will make a card with the passed group details
     public void makeCardMy(String title, String description, String tid){
-        CardModel m = new CardModel();
+        TaskCardModel m = new TaskCardModel();
         m.setTitle(title);
         m.setDescription(description);
         m.setImg(R.mipmap.ic_group_member_round);
-        m.setGroupId(tid);
+        m.setGroupId(mGroupId);
+        m.setTaskId(tid);
         mModels.add(m);
         myAdapter.notifyDataSetChanged();
-        Log.d("Card list", ""+myAdapter.cardModels);
     }
 
     // Will make a card with the passed group details
     public void makeCardUnassigned(String title, String description, String tid){
-        CardModel m = new CardModel();
+        TaskCardModel m = new TaskCardModel();
         m.setTitle(title);
         m.setDescription(description);
         m.setImg(R.mipmap.ic_group_member_round);
-        m.setGroupId(tid);
+        m.setGroupId(mGroupId);
+        m.setTaskId(tid);
         uModels.add(m);
         uAdapter.notifyDataSetChanged();
-        Log.d("Card list", ""+uAdapter.cardModels);
     }
 
     // Will make a card with the passed group details
     public void makeCardAssigned(String title, String description, String tid){
-        CardModel m = new CardModel();
+        TaskCardModel m = new TaskCardModel();
         m.setTitle(title);
         m.setDescription(description);
         m.setImg(R.mipmap.ic_group_member_round);
-        m.setGroupId(tid);
+        m.setGroupId(mGroupId);
+        m.setTaskId(tid);
         aModels.add(m);
         aAdapter.notifyDataSetChanged();
-        Log.d("Card list", ""+aAdapter.cardModels);
     }
 }
