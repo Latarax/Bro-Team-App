@@ -1,8 +1,10 @@
 package android.grouper.broTeam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,15 @@ public class HomeGroupList extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.myTaskRecyclerView); // get container for cards
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); //set layout
         progressBar = findViewById(R.id.progressBar);
+
+        ImageButton createGroupBtn = findViewById(R.id.createGroupBtn);
+        createGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goToCreateGroup = new Intent(HomeGroupList.this, CreateNewGroup.class);
+                startActivity(goToCreateGroup);
+            }
+        });
 
         getMyList(); // get list of groups from database and make cards in them
         Log.d("test", "Finished getting groups");

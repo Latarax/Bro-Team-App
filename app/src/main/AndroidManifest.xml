@@ -38,7 +38,9 @@
             android:label="@string/title_activity_group_waypoint_display"></activity>
         <activity android:name=".GroupUsersDisplay" />
         <activity android:name=".GroupChatDisplay" />
-        <activity android:name=".GroupTaskDisplay" />
+        <activity android:name=".GroupTaskDisplay"
+            android:parentActivityName=".HomeGroupList"/>
+        <activity android:name=".CreateNewGroup"/>
         <activity android:name=".HomeGroupList" />
         <activity android:name=".CreateNewAccount" />
         <activity android:name=".LoginMain">

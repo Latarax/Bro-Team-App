@@ -87,6 +87,8 @@ public class GroupTaskDisplay extends AppCompatActivity {
         uRecyclerView.setAdapter(uAdapter);
         aRecyclerView.setAdapter(aAdapter);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
