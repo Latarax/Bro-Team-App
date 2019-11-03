@@ -31,7 +31,7 @@
         android:id="@+id/groupNameTitle"
         android:layout_width="154dp"
         android:layout_height="40dp"
-        android:layout_marginStart="23dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="229dp"
         android:text="Group Title"
@@ -40,33 +40,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/groupTitleInput"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="75dp"
+        android:hint="What is the Name of the Group?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameTitle" />
+
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="150dp"
         android:text="Group Description"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupTitleInput" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/groupTitleInput"
-        android:layout_width="310dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:hint="What is the Group's Name?"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTitle" />
-
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/groupDescriptionInput"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="81dp"
         android:hint="What is this Group About?"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
