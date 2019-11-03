@@ -21,7 +21,10 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 
 
@@ -113,6 +116,11 @@ public class CreateNewAccount extends AppCompatActivity {
                                 .build();
                         user.updateProfile(profileUpdates);
                         db.collection("usersList").document(user.getUid()).set(user);
+                        DocumentReference userId = db.collection("usersList").document(user.getUid());
+                        ArrayList<DocumentReference> groupList = new ArrayList<>();
+                        userId.update(
+                                "groupList", groupList
+                        );
 
                     }
                 }
