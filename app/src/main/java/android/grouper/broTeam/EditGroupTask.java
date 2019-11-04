@@ -54,8 +54,6 @@ public class EditGroupTask extends AppCompatActivity {
         taskTitle.setText(iTitle);
         taskDescription.setText(iDescription);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         deleteTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
