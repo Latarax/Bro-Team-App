@@ -2,10 +2,9 @@ package android.grouper.broTeam;
 
 import android.view.View;
 
-public class CardModel {
-
+public class TaskCardModel {
     private View.OnClickListener onClickListener;
-    private String title, description, identification;
+    private String title, description, groupId, taskId;
     private int img;
 
     public String getTitle(){
@@ -20,7 +19,9 @@ public class CardModel {
         return img;
     }
 
-    public String getIdentification(){ return identification; }
+    public String getGroupId(){ return groupId; }
+
+    public String getTaskId() { return taskId; }
 
     public void setTitle(String title){
         this.title = title;
@@ -34,6 +35,7 @@ public class CardModel {
         this.img = img;
     }
 
-    public void setIdentification(String gid){this.identification = gid; }
-}
+    public void setGroupId(String gid){ this.groupId = gid; }
 
+    public void setTaskId(String tid) { this.taskId = tid; }
+}

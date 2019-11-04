@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class HomeGroupList extends AppCompatActivity {
     RecyclerView mRecyclerView;
     GroupCardAdapter myAdapter;
     ProgressBar progressBar;
+    TextView mNoGroups;
     ArrayList<CardModel> models = new ArrayList<>();
 
     @Override
@@ -43,6 +45,7 @@ public class HomeGroupList extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.myTaskRecyclerView); // get container for cards
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); //set layout
         progressBar = findViewById(R.id.progressBar);
+        mNoGroups = findViewById(R.id.no_groups);
 
         ImageButton createGroupBtn = findViewById(R.id.createGroupBtn);
         createGroupBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,10 +118,8 @@ public class HomeGroupList extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
                     } else {
+                        mNoGroups.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
-                        String gTitle = "You're not in any groups :(";
-                        String description = "Create or join groups for more";
-                        makeCard(gTitle, description, null);
                     }
                 } else { // TO-DO: If no groups, display default cards
                     Log.d("failed to get", "get failed with ", task.getException());
@@ -133,7 +134,7 @@ public class HomeGroupList extends AppCompatActivity {
         m.setTitle(title);
         m.setDescription(description);
         m.setImg(R.mipmap.ic_group_icon_round);
-        m.setGroupId(gid);
+        m.setIdentification(gid);
         models.add(m);
         myAdapter.notifyDataSetChanged();
         Log.d("Card list", ""+myAdapter.cardModels);
