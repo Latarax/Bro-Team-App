@@ -30,15 +30,16 @@ import java.util.Map;
 
 public class GroupTaskDisplay extends AppCompatActivity {
 
-    RecyclerView mRecyclerView, uRecyclerView, aRecyclerView;
-    TaskCardAdapter myAdapter, uAdapter, aAdapter;
+    RecyclerView mRecyclerView, uRecyclerView, aRecyclerView, cRecyclerView;
+    TaskCardAdapter myAdapter, uAdapter, aAdapter, cAdapter;
     String mGroupId;
     ProgressBar progressBar;
-    TextView mNoTasks, uNoTasks, aNoTasks;
+    TextView mNoTasks, uNoTasks, aNoTasks, cNoTasks;
 
     ArrayList<TaskCardModel> mModels = new ArrayList<>();
     ArrayList<TaskCardModel> uModels = new ArrayList<>();
     ArrayList<TaskCardModel> aModels = new ArrayList<>();
+    ArrayList<TaskCardModel> cModels = new ArrayList<>();
     BottomNavigationView navigation;
 
     @Override
@@ -59,21 +60,27 @@ public class GroupTaskDisplay extends AppCompatActivity {
         aRecyclerView = findViewById(R.id.assignedRecyclerView);
         aRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        cRecyclerView = findViewById(R.id.completedTasksRecyclerView);
+        cRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         progressBar = findViewById(R.id.progressBar);
 
         mNoTasks = findViewById(R.id.no_tasks_myassigned);
         uNoTasks = findViewById(R.id.no_tasks_unassigned);
         aNoTasks = findViewById(R.id.no_tasks_assigned);
+        cNoTasks = findViewById(R.id.no_tasks_completed);
 
         getMyList();
 
         myAdapter = new TaskCardAdapter(this, mModels);
         uAdapter = new TaskCardAdapter(this, uModels);
         aAdapter = new TaskCardAdapter(this, aModels);
+        cAdapter = new TaskCardAdapter(this, cModels);
 
         mRecyclerView.setAdapter(myAdapter);
         uRecyclerView.setAdapter(uAdapter);
         aRecyclerView.setAdapter(aAdapter);
+        cRecyclerView.setAdapter(cAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -123,44 +130,66 @@ public class GroupTaskDisplay extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
                     QuerySnapshot querySnapshot = task.getResult();
-                    Log.d("Query Snapshot", ""+querySnapshot.getDocuments());
+                    if (!querySnapshot.isEmpty()) {
+                        Log.d("Query Snapshot", "" + querySnapshot.getDocuments());
 
-                    List<DocumentSnapshot> taskList = querySnapshot.getDocuments();
-                    Log.d("List object", ""+taskList);
+                        List<DocumentSnapshot> taskList = querySnapshot.getDocuments();
+                        Log.d("List object", "" + taskList);
 
-                    for (DocumentSnapshot documentSnapshot : taskList) {
-                        Log.d("List Item", ""+documentSnapshot.getData());
-                        Map<String, Object> data= documentSnapshot.getData();
-                        String tTitle = data.get("taskName").toString();
-                        String description = data.get("description").toString();
-                        DocumentReference userRef = (DocumentReference) data.get("assignedUser");
-                        String assignedUser = userRef.getId();
-                        String tid = documentSnapshot.getId();
+                        for (DocumentSnapshot documentSnapshot : taskList) {
+                            Log.d("List Item", "" + documentSnapshot.getData());
+                            Map<String, Object> data = documentSnapshot.getData();
+                            boolean isDone = (boolean) data.get("isDone");
+                            String tTitle = data.get("taskName").toString();
+                            String description = data.get("description").toString();
+                            DocumentReference userRef = (DocumentReference) data.get("assignedUser");
+                            String assignedUser = userRef.getId();
+                            String tid = documentSnapshot.getId();
 
-                        Log.d("Document Values", ""+tTitle+" "+description+" "+assignedUser+" "+tid+" "+user.getUid());
+                            Log.d("Document Values", "" + tTitle + " " + description + " " + assignedUser + " " + tid + " " + user.getUid());
 
-                        if(assignedUser.contentEquals("dummyUser")){
-                            makeCardUnassigned(tTitle, description, tid);
-                        } else if(assignedUser.contentEquals(user.getUid())) {
-                            makeCardMy(tTitle, description, tid);
-                        } else {
-                            makeCardAssigned(tTitle, description, tid);
+                            if(isDone){
+                                makeCardCompleted(tTitle, description, tid);
+                            } else if (assignedUser.contentEquals("dummyUser")) {
+                                makeCardUnassigned(tTitle, description, tid);
+                            } else if (assignedUser.contentEquals(user.getUid())) {
+                                makeCardMy(tTitle, description, tid);
+                            } else {
+                                makeCardAssigned(tTitle, description, tid);
+                            }
                         }
-                    }
 
-                    if(mModels.isEmpty()){
-                        mNoTasks.setVisibility(View.VISIBLE);
+                        if (mModels.isEmpty()) {
+                            mNoTasks.setVisibility(View.VISIBLE);
+                        }
+                        if (uModels.isEmpty()) {
+                            uNoTasks.setVisibility(View.VISIBLE);
+                        }
+                        if (aModels.isEmpty()) {
+                            aNoTasks.setVisibility(View.VISIBLE);
+                        }
+                        progressBar.setVisibility(View.GONE);
                     }
-                    if (uModels.isEmpty()){
-                        uNoTasks.setVisibility(View.VISIBLE);
-                    }
-                    if (aModels.isEmpty()){
-                        aNoTasks.setVisibility(View.VISIBLE);
-                    }
+                } else {
                     progressBar.setVisibility(View.GONE);
+                    mNoTasks.setVisibility(View.VISIBLE);
+                    uNoTasks.setVisibility(View.VISIBLE);
+                    aNoTasks.setVisibility(View.VISIBLE);
+                    cNoTasks.setVisibility(View.VISIBLE);
                 }
             }
         });
+    }
+
+    private void makeCardCompleted(String title, String description, String tid) {
+        TaskCardModel m = new TaskCardModel();
+        m.setTitle(title);
+        m.setDescription(description);
+        m.setImg(R.mipmap.ic_group_member_round);
+        m.setGroupId(mGroupId);
+        m.setTaskId(tid);
+        cModels.add(m);
+        cAdapter.notifyDataSetChanged();
     }
 
     // Will make a card with the passed group details

@@ -177,5 +177,15 @@ public class EditGroupTask extends AppCompatActivity {
 
     private void CompleteTask() {
 
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference task = database.collection("groupsList").document(groupId)
+                                            .collection("tasks").document(taskId);
+
+        task.update("isDone", true);
+        Intent goToGroupTaskDisplay = new Intent(EditGroupTask.this, GroupTaskDisplay.class );
+        goToGroupTaskDisplay.putExtra("iGroupId", groupId);
+        startActivity(goToGroupTaskDisplay);
+        finish();
+
     }
 }
