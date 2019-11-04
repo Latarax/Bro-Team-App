@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,6 +43,8 @@ public class HomeGroupList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_group_list);
 
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         mRecyclerView = findViewById(R.id.myTaskRecyclerView); // get container for cards
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); //set layout
         progressBar = findViewById(R.id.progressBar);
@@ -61,6 +64,16 @@ public class HomeGroupList extends AppCompatActivity {
 
         myAdapter = new GroupCardAdapter(this, models); //set adapter objects and onclick listeners
         mRecyclerView.setAdapter(myAdapter); // put all cards on display
+
+        Button signOutButton = findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent goToLoginPage = new Intent(view.getContext(), LoginMain.class);
+                view.getContext().startActivity(goToLoginPage);
+            }
+        });
     }
 
     //This will grab all the groups the current user is enrolled in and make cards

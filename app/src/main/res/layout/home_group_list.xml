@@ -89,4 +89,15 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="66dp"
+        android:layout_height="38dp"
+        android:text="Sign out"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toStartOf="@+id/createGroupTxtView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 
 /*
  ############################################################
@@ -67,6 +68,19 @@ public class LoginMain extends AppCompatActivity {
                 view2.getContext().startActivity(gotoNewAccount);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Intent goToHome = new Intent(LoginMain.this, HomeGroupList.class);
+            goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(goToHome);
+            finish();
+        }
     }
 
     private void userLogin() {
