@@ -4,28 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class EditGroupTask extends AppCompatActivity {
 
-    EditText taskTitle, taskDescription, taskLocation, assignedTo;
+    EditText taskTitle, taskDescription, taskLocation;
+    Spinner assignedTo;
     String groupId, taskId, iTitle, iDescription;
     Button deleteTask, saveTask, completeTask;
+    ArrayList<DocumentReference> membersListReference;
+    List<String> groupMembers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +52,11 @@ public class EditGroupTask extends AppCompatActivity {
         taskTitle = findViewById(R.id.taskTitle);
         taskDescription = findViewById(R.id.taskDescription);
         taskLocation = findViewById(R.id.taskAddress);
-        assignedTo = findViewById(R.id.taskClaimUser);
         deleteTask = findViewById(R.id.taskDeleteButton);
         saveTask = findViewById(R.id.taskSaveButton);
         completeTask = findViewById(R.id.taskCompleteButton);
+
+        getGroupMembers();
 
         getTaskDetails();
 
@@ -77,6 +86,39 @@ public class EditGroupTask extends AppCompatActivity {
 
     }
 
+    private void getGroupMembers() {
+
+        assignedTo = findViewById(R.id.assignUserDropBox);
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference group = database.collection("groupsList").document(groupId);
+
+        group.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                Map<String, Object> membersMap = (Map<String, Object>) documentSnapshot.get("Members");
+                Log.d("Members Map", ""+membersMap);
+                for( Object object: membersMap.values()){
+                    Log.d("object", ""+object);
+                    Map<String, Object> member = (Map<String, Object>) object;
+                    Log.d("Members Map", ""+member.get("Member"));
+                    membersListReference.add((DocumentReference) member.get("Member"));
+                }
+
+                for (DocumentReference member : membersListReference){
+                    Log.d("Document Reference", ""+member);
+                    member.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            groupMembers.add(documentSnapshot.get("Username").toString());
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
     private void getTaskDetails() {
 
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -96,7 +138,20 @@ public class EditGroupTask extends AppCompatActivity {
                 assignedUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        assignedTo.setText(documentSnapshot.get("Username").toString());
+
+                        int assignedUser;
+                        for(assignedUser = 0; assignedUser < groupMembers.size(); assignedUser++){
+                            if(groupMembers.get(assignedUser).contentEquals(documentSnapshot.get("assignedUser").toString()))
+                                break;
+                        }
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(EditGroupTask.this,
+                                android.R.layout.simple_spinner_item, groupMembers);
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        assignedTo.setAdapter(dataAdapter);
+                        assignedTo.setSelection(assignedUser);
+
+                        //assignedTo.setText(documentSnapshot.get("Username").toString());
                     }
                 });
             }
@@ -150,7 +205,7 @@ public class EditGroupTask extends AppCompatActivity {
                 .collection("tasks").document(taskId);
 
 
-        String assignedUsername = assignedTo.getText().toString().trim();
+        /*String assignedUsername = assignedTo.;
         database.collection("usersList").whereEqualTo("Username", assignedUsername)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -169,7 +224,7 @@ public class EditGroupTask extends AppCompatActivity {
                 startActivity(goToGroupTaskDisplay);
                 finish();
             }
-        });
+        });*/
 
     }
 
