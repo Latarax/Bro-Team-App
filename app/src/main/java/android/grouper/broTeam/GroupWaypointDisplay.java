@@ -1,11 +1,11 @@
 package android.grouper.broTeam;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,11 +19,15 @@ public class GroupWaypointDisplay extends FragmentActivity implements OnMapReady
 
     private GoogleMap mMap;
     BottomNavigationView navigation;
+    String mGroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_waypoint_display);
+        Intent intent = getIntent();
+        mGroupId = intent.getStringExtra("iGroupId");
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -39,10 +43,12 @@ public class GroupWaypointDisplay extends FragmentActivity implements OnMapReady
                 switch (item.getItemId()) {
                     case R.id.groupTasksItem:
                         Intent a = new Intent(GroupWaypointDisplay.this, GroupTaskDisplay.class);
+                        a.putExtra("iGroupId", mGroupId);
                         startActivity(a);
                         break;
                     case R.id.groupUsersItem:
                         Intent b = new Intent(GroupWaypointDisplay.this, GroupUsersDisplay.class);
+                        b.putExtra("iGroupId", mGroupId);
                         startActivity(b);
                         break;
                     case R.id.groupNavItem:
@@ -50,6 +56,7 @@ public class GroupWaypointDisplay extends FragmentActivity implements OnMapReady
                         break;
                     case R.id.groupChatItem:
                         Intent d = new Intent(GroupWaypointDisplay.this, GroupChatDisplay.class);
+                        d.putExtra("iGroupId", mGroupId);
                         startActivity(d);
                         break;
                 }

@@ -96,14 +96,17 @@ public class GroupTaskDisplay extends AppCompatActivity {
                         break;
                     case R.id.groupUsersItem:
                         Intent b = new Intent(GroupTaskDisplay.this, GroupUsersDisplay.class);
+                        b.putExtra("iGroupId", mGroupId);
                         startActivity(b);
                         break;
                     case R.id.groupNavItem:
                         Intent c = new Intent(GroupTaskDisplay.this, GroupWaypointDisplay.class);
+                        c.putExtra("iGroupId", mGroupId);
                         startActivity(c);
                         break;
                     case R.id.groupChatItem:
                         Intent d = new Intent(GroupTaskDisplay.this, GroupChatDisplay.class);
+                        d.putExtra("iGroupId", mGroupId);
                         startActivity(d);
                         break;
                 }
@@ -114,7 +117,6 @@ public class GroupTaskDisplay extends AppCompatActivity {
     }
 
     private void getMyList() {
-
 
         progressBar.setVisibility(View.VISIBLE);
         // get user instance and database reference
@@ -168,8 +170,8 @@ public class GroupTaskDisplay extends AppCompatActivity {
                         if (aModels.isEmpty()) {
                             aNoTasks.setVisibility(View.VISIBLE);
                         }
-                        progressBar.setVisibility(View.GONE);
                     }
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     progressBar.setVisibility(View.GONE);
                     mNoTasks.setVisibility(View.VISIBLE);
