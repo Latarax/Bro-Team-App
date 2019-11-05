@@ -120,10 +120,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskAddress" />
 
+    <Spinner
+        android:id="@+id/assignUserDropBox"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assignTaskTextView" />
+
     <Button
         android:id="@+id/taskSaveButton"
         android:layout_width="120dp"
         android:layout_height="55dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="16dp"
         android:text="Save Task"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -150,15 +161,6 @@
         android:text="Delete Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
-
-    <Spinner
-        android:id="@+id/assignUserDropBox"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignTaskTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
