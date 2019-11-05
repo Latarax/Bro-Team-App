@@ -12,11 +12,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class GroupUsersDisplay extends AppCompatActivity {
 
     BottomNavigationView navigation;
+    String mGroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_users_display);
+        Intent intent = getIntent();
+        mGroupId = intent.getStringExtra("iGroupId");
 
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
@@ -28,6 +31,7 @@ public class GroupUsersDisplay extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.groupTasksItem:
                         Intent a = new Intent(GroupUsersDisplay.this, GroupTaskDisplay.class);
+                        a.putExtra("iGroupId", mGroupId);
                         startActivity(a);
                         break;
                     case R.id.groupUsersItem:
@@ -35,10 +39,12 @@ public class GroupUsersDisplay extends AppCompatActivity {
                         break;
                     case R.id.groupNavItem:
                         Intent c = new Intent(GroupUsersDisplay.this, GroupWaypointDisplay.class);
+                        c.putExtra("iGroupId", mGroupId);
                         startActivity(c);
                         break;
                     case R.id.groupChatItem:
                         Intent d = new Intent(GroupUsersDisplay.this, GroupChatDisplay.class);
+                        d.putExtra("iGroupId", mGroupId);
                         startActivity(d);
                         break;
                 }
