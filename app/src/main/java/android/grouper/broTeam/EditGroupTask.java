@@ -20,7 +20,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class EditGroupTask extends AppCompatActivity {
     Spinner assignedTo;
     String groupId, taskId, iTitle, iDescription;
     Button deleteTask, saveTask, completeTask;
-    List<String> groupMembers;
+    List<String> groupMembers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,67 +88,61 @@ public class EditGroupTask extends AppCompatActivity {
 
         assignedTo = findViewById(R.id.assignUserDropBox);
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference group = database.collection("groupsList").document(groupId);
+        DocumentReference taskReference = database.collection("groupsList").document(groupId)
+                .collection("tasks").document(taskId);
 
-        group.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        taskReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot documentSnapshot = task.getResult();
-                Map<String, Map<String, Object>> membersMap = (Map<String, Map<String, Object>>) documentSnapshot.get("Members");
-                Log.d("Members Map", ""+membersMap);
-                for(int i = 0; i < membersMap.size(); i++){
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                    Log.d("object", ""+membersMap.get(""+i));
-                    Map<String, Object> member = membersMap.get(""+i);
-                    Log.d("Members Map", ""+member.get("Member"));
-                    DocumentReference groupMember = (DocumentReference) member.get("Member");
-
-                    Log.d("Document Reference", ""+groupMember);
-                    groupMember.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Log.d("Adding username", ""+documentSnapshot.get("Username").toString());
-                            groupMembers.add(documentSnapshot.get("Username").toString());
-                            Log.d("Group list", ""+groupMembers);
-                        }
-                    });
+                if(!documentSnapshot.get("location").toString().isEmpty()) {
+                    taskLocation.setText(documentSnapshot.get("location").toString());
+                } else {
+                    taskLocation.setText("No Location Set");
                 }
 
-                DocumentReference taskReference = database.collection("groupsList").document(groupId)
-                        .collection("tasks").document(taskId);
-                taskReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                DocumentReference assignedUser = (DocumentReference) documentSnapshot.get("assignedUser");
+                assignedUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        groupMembers.add(documentSnapshot.getString("Username"));
 
-                        if(!documentSnapshot.get("location").toString().isEmpty()) {
-                            taskLocation.setText(documentSnapshot.get("location").toString());
-                        } else {
-                            taskLocation.setText("No Location Set");
-                        }
-                        DocumentReference assignedUser = (DocumentReference) documentSnapshot.get("assignedUser");
-                        assignedUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        DocumentReference group = database.collection("groupsList").document(groupId);
+                        group.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                Map<String, Map<String, Object>> membersMap = (Map<String, Map<String, Object>>) documentSnapshot.get("Members");
+                                for (int i = 0; i < membersMap.size(); i++) {
 
-                                int assignedUser;
-                                for(assignedUser = 0; assignedUser < groupMembers.size(); assignedUser++){
-                                    if(groupMembers.get(assignedUser).contentEquals(documentSnapshot.get("assignedUser").toString()))
-                                        break;
+                                    Map<String, Object> member = membersMap.get("" + i);
+                                    final DocumentReference groupMember = (DocumentReference) member.get("Member");
+                                    groupMember.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                            if(!groupMembers.contains(documentSnapshot.getString("Username"))) {
+                                                groupMembers.add(documentSnapshot.getString("Username"));
+                                            }
+                                        }
+                                    });
+                                }
+
+                                if(!groupMembers.contains("Unassigned")){
+                                    groupMembers.add("Unassigned");
                                 }
 
                                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(EditGroupTask.this,
                                         android.R.layout.simple_spinner_item, groupMembers);
                                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 assignedTo.setAdapter(dataAdapter);
-                                assignedTo.setSelection(assignedUser);
-
-                                //assignedTo.setText(documentSnapshot.get("Username").toString());
                             }
                         });
                     }
                 });
             }
         });
+
     }
 
 
@@ -196,7 +192,7 @@ public class EditGroupTask extends AppCompatActivity {
                 .collection("tasks").document(taskId);
 
 
-        /*String assignedUsername = assignedTo.;
+        String assignedUsername = assignedTo.getSelectedItem().toString();
         database.collection("usersList").whereEqualTo("Username", assignedUsername)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -215,8 +211,7 @@ public class EditGroupTask extends AppCompatActivity {
                 startActivity(goToGroupTaskDisplay);
                 finish();
             }
-        });*/
-
+        });
     }
 
     private void CompleteTask() {

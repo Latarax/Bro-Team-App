@@ -40,8 +40,7 @@
         <activity android:name=".GroupChatDisplay" />
         <activity android:name=".GroupTaskDisplay"
             android:parentActivityName=".HomeGroupList"/>
-        <activity android:name=".EditGroupTask"
-            android:parentActivityName=".GroupTaskDisplay"/>
+        <activity android:name=".EditGroupTask"/>
         <activity android:name=".CreateNewGroup"/>
         <activity android:name=".HomeGroupList" />
         <activity android:name=".CreateNewAccount" />
