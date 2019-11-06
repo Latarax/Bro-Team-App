@@ -10,13 +10,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +34,9 @@ public class EditGroupTask extends AppCompatActivity {
     EditText taskTitle, taskDescription, taskLocation, assignedTo;
     String groupId, taskId, iTitle, iDescription;
     Button deleteTask, saveTask, completeTask;
+    int AUTOCOMPLETE_REQUEST_CODE = 1;
+    private String TAG = "EditGroupTask";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,12 @@ public class EditGroupTask extends AppCompatActivity {
         deleteTask = findViewById(R.id.taskDeleteButton);
         saveTask = findViewById(R.id.taskSaveButton);
         completeTask = findViewById(R.id.taskCompleteButton);
+
+        // Initialize Places.
+        Places.initialize(getApplicationContext(), "AIzaSyCi02I-gLHfb5V5IlZVHYRHk_S_THynp0k");
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
 
         getTaskDetails();
 
@@ -75,7 +92,40 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
+        taskLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set the fields to specify which types of place data to
+                // return after the user has made a selection.
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+
+                // Start the autocomplete intent.
+                Intent autoPlaceIntent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.OVERLAY, fields).build(EditGroupTask.this);
+                startActivityForResult(autoPlaceIntent, AUTOCOMPLETE_REQUEST_CODE);
+            }
+        });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+    }
+
+
 
     private void getTaskDetails() {
 
