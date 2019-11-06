@@ -13,9 +13,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -23,17 +30,28 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class EditGroupTask extends AppCompatActivity {
 
+    private String TAG = "EditGroupTask";
     EditText taskTitle, taskDescription, taskLocation;
     Spinner assignedTo;
     String groupId, taskId, iTitle, iDescription;
     Button deleteTask, saveTask, completeTask;
     List<String> groupMembers = new ArrayList<>();
+
+    // place stuff
+    private String placeName;
+    private LatLng placeLatLng;
+    private double placeLat;
+    private double placeLng;
+    private String placeID;
+    int AUTOCOMPLETE_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +66,10 @@ public class EditGroupTask extends AppCompatActivity {
 
         Log.d("GroupId", ""+groupId);
         Log.d("TaskId", ""+taskId);
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
+        }
 
         taskTitle = findViewById(R.id.taskTitle);
         taskDescription = findViewById(R.id.taskDescription);
@@ -82,6 +104,43 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
+        taskLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set the fields to specify which types of place data to
+                // return after the user has made a selection.
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+
+                // Start the autocomplete intent.
+                Intent autoPlaceIntent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.OVERLAY, fields).build(EditGroupTask.this);
+                startActivityForResult(autoPlaceIntent, AUTOCOMPLETE_REQUEST_CODE);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                placeName = place.getName();
+                placeLatLng = place.getLatLng();
+                placeLat = placeLatLng.latitude;
+                placeLng = placeLatLng.longitude;
+                placeID = place.getId();
+                taskLocation.setText(placeName);
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.d(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
     private void getTaskDetails() {
@@ -95,8 +154,8 @@ public class EditGroupTask extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                if(!documentSnapshot.get("location").toString().isEmpty()) {
-                    taskLocation.setText(documentSnapshot.get("location").toString());
+                if(!documentSnapshot.get("placeName").toString().isEmpty()) {
+                    taskLocation.setText(documentSnapshot.get("placeName").toString());
                 } else {
                     taskLocation.setText("No Location Set");
                 }
@@ -112,10 +171,13 @@ public class EditGroupTask extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot documentSnapshot = task.getResult();
+                                Log.d("Document snapshot", ""+documentSnapshot);
                                 Map<String, Map<String, Object>> membersMap = (Map<String, Map<String, Object>>) documentSnapshot.get("Members");
+                                Log.d("Member Map", ""+membersMap);
                                 for (int i = 0; i < membersMap.size(); i++) {
 
                                     Map<String, Object> member = membersMap.get("" + i);
+                                    Log.d("Member map", ""+member);
                                     final DocumentReference groupMember = (DocumentReference) member.get("Member");
                                     groupMember.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
@@ -202,7 +264,10 @@ public class EditGroupTask extends AppCompatActivity {
 
                 task.update("assignedUser", database.collection("usersList").document(user.getId()));
                 task.update("description", taskDescribe);
-                task.update("location", location);
+                task.update("placeName", placeName);
+                task.update("placeID", placeID);
+                task.update("placeLat", placeLat);
+                task.update("placeLng", placeLng);
                 task.update("taskName", taskName);
 
                 Toast.makeText(getApplicationContext(), "Task Updated", Toast.LENGTH_SHORT).show();
