@@ -4,39 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class EditGroupTask extends AppCompatActivity {
 
-    EditText taskTitle, taskDescription, taskLocation, assignedTo;
+    EditText taskTitle, taskDescription, taskLocation;
+    Spinner assignedTo;
     String groupId, taskId, iTitle, iDescription;
     Button deleteTask, saveTask, completeTask;
-    int AUTOCOMPLETE_REQUEST_CODE = 1;
-    private String TAG = "EditGroupTask";
-
+    List<String> groupMembers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +52,9 @@ public class EditGroupTask extends AppCompatActivity {
         taskTitle = findViewById(R.id.taskTitle);
         taskDescription = findViewById(R.id.taskDescription);
         taskLocation = findViewById(R.id.taskAddress);
-        assignedTo = findViewById(R.id.taskClaimUser);
         deleteTask = findViewById(R.id.taskDeleteButton);
         saveTask = findViewById(R.id.taskSaveButton);
         completeTask = findViewById(R.id.taskCompleteButton);
-
-        // Initialize Places.
-        Places.initialize(getApplicationContext(), "AIzaSyCi02I-gLHfb5V5IlZVHYRHk_S_THynp0k");
-
-        // Create a new Places client instance.
-        PlacesClient placesClient = Places.createClient(this);
 
         getTaskDetails();
 
@@ -92,48 +82,16 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
-        taskLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Set the fields to specify which types of place data to
-                // return after the user has made a selection.
-                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-
-                // Start the autocomplete intent.
-                Intent autoPlaceIntent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.OVERLAY, fields).build(EditGroupTask.this);
-                startActivityForResult(autoPlaceIntent, AUTOCOMPLETE_REQUEST_CODE);
-            }
-        });
-
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-    }
-
-
 
     private void getTaskDetails() {
 
+        assignedTo = findViewById(R.id.assignUserDropBox);
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference taskReference = database.collection("groupsList").document(groupId)
+                .collection("tasks").document(taskId);
 
-        DocumentReference task = database.collection("groupsList").document(groupId)
-                                            .collection("tasks").document(taskId);
-        task.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        taskReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
@@ -142,15 +100,49 @@ public class EditGroupTask extends AppCompatActivity {
                 } else {
                     taskLocation.setText("No Location Set");
                 }
+
                 DocumentReference assignedUser = (DocumentReference) documentSnapshot.get("assignedUser");
                 assignedUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        assignedTo.setText(documentSnapshot.get("Username").toString());
+                        groupMembers.add(documentSnapshot.getString("Username"));
+
+                        DocumentReference group = database.collection("groupsList").document(groupId);
+                        group.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                Map<String, Map<String, Object>> membersMap = (Map<String, Map<String, Object>>) documentSnapshot.get("Members");
+                                for (int i = 0; i < membersMap.size(); i++) {
+
+                                    Map<String, Object> member = membersMap.get("" + i);
+                                    final DocumentReference groupMember = (DocumentReference) member.get("Member");
+                                    groupMember.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                            if(!groupMembers.contains(documentSnapshot.getString("Username"))) {
+                                                groupMembers.add(documentSnapshot.getString("Username"));
+                                            }
+                                        }
+                                    });
+                                }
+
+                                if(!groupMembers.contains("Unassigned")){
+                                    groupMembers.add("Unassigned");
+                                }
+
+                                ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(EditGroupTask.this,
+                                        android.R.layout.simple_spinner_item, groupMembers);
+                                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                assignedTo.setAdapter(dataAdapter);
+                            }
+                        });
                     }
                 });
             }
         });
+
     }
 
 
@@ -200,7 +192,7 @@ public class EditGroupTask extends AppCompatActivity {
                 .collection("tasks").document(taskId);
 
 
-        String assignedUsername = assignedTo.getText().toString().trim();
+        String assignedUsername = assignedTo.getSelectedItem().toString();
         database.collection("usersList").whereEqualTo("Username", assignedUsername)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -220,7 +212,6 @@ public class EditGroupTask extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private void CompleteTask() {
