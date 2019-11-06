@@ -70,17 +70,15 @@ public class CreateNewGroup extends AppCompatActivity {
         // CollectionReference tasks = new CollectionReference();
         Map<String, Object> Members = new HashMap<>();
         Map<String, Object> newMember = new HashMap<>();
-        Map<String, Map<String, Object>> newMemberList = new HashMap<>();
 
         newMember.put("Member", userId);
         newMember.put("isAdmin", true);
-        newMemberList.put("0", newMember);
-        Members.put("Member", newMemberList);
+        Members.put("0", newMember);
 
         Map<String, Object> data = new HashMap<>();
         data.put("groupName", gTitle.getText().toString());
         data.put("description", gDescription.getText().toString());
-        data.put("owner", user.getDisplayName());
+        data.put("owner", user.getUid());
         data.put("Members", Members);
 
 
