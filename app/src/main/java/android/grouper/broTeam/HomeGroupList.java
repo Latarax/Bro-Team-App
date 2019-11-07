@@ -108,8 +108,9 @@ public class HomeGroupList extends AppCompatActivity {
         userId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                Log.d("task group call", ""+task.getResult());
+                // If user found in Firestore
                 if (task.isSuccessful()) {
+                    // get data
                     DocumentSnapshot document = task.getResult(); // get snapshot of user details
                     Log.d("DocumentSnapshot data: ", "" + document.getData());
 
