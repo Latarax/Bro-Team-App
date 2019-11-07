@@ -57,29 +57,35 @@ public class EditGroupTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group_task);
-        Intent intent = getIntent();
 
+        // Get data from intent
+        Intent intent = getIntent();
         iTitle = intent.getStringExtra("iTitle");
         iDescription = intent.getStringExtra("iDescription");
         taskId = intent.getStringExtra("iTaskId");
         groupId = intent.getStringExtra("iGroupId");
 
+        // Get Google API key
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
 
+        // Collect all of views for use
         taskTitle = findViewById(R.id.taskTitle);
         taskDescription = findViewById(R.id.taskDescription);
         taskLocation = findViewById(R.id.taskAddress);
         deleteTask = findViewById(R.id.taskDeleteButton);
         saveTask = findViewById(R.id.taskSaveButton);
         completeTask = findViewById(R.id.taskCompleteButton);
+        assignedTo = findViewById(R.id.assignUserDropBox);
 
+        // Get the rest of the task details
         getTaskDetails();
 
-        taskTitle.setText(iTitle);
-        taskDescription.setText(iDescription);
+        taskTitle.setText(iTitle); // set the title of the task
+        taskDescription.setText(iDescription); // set the description of the task
 
+        // On click listener for deleting the task
         deleteTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +93,7 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
+        // On click Listener for saving changes (or no changes) made to the task
         saveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +101,7 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
+        //On click listener for making task complete
         completeTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,9 +148,9 @@ public class EditGroupTask extends AppCompatActivity {
         }
     }
 
+    // Will task document and assign all the fields to local variables
     private void getTaskDetails() {
 
-        assignedTo = findViewById(R.id.assignUserDropBox);
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference taskReference = database.collection("groupsList").document(groupId)
                 .collection("tasks").document(taskId);
@@ -153,6 +161,10 @@ public class EditGroupTask extends AppCompatActivity {
 
                 if(!documentSnapshot.get("placeName").toString().isEmpty()) {
                     taskLocation.setText(documentSnapshot.get("placeName").toString());
+                    placeName = documentSnapshot.get("placeName").toString();
+                    placeID = documentSnapshot.get("placeID").toString();
+                    placeLat = documentSnapshot.getDouble("placeLat");
+                    placeLng = documentSnapshot.getDouble("placeLng");
                 } else {
                     taskLocation.setText("No Location Set");
                 }
@@ -168,9 +180,7 @@ public class EditGroupTask extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot documentSnapshot = task.getResult();
-                                Log.d("Document snapshot", ""+documentSnapshot);
                                 Map<String, Map<String, Object>> membersMap = (Map<String, Map<String, Object>>) documentSnapshot.get("Members");
-                                Log.d("Member Map", ""+membersMap);
                                 for (int i = 0; i < membersMap.size(); i++) {
 
                                     Map<String, Object> member = membersMap.get("" + i);
@@ -240,6 +250,7 @@ public class EditGroupTask extends AppCompatActivity {
             taskDescription.requestFocus();
             return;
         }
+
         if(placeName == null){
             placeName = "";
             placeID = "";
