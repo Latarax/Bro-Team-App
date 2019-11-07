@@ -9,5 +9,10 @@
         android:icon="@drawable/ic_no_notifications_icon"
         android:title="@string/action_notification"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/LogoutButton"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 
 </menu>

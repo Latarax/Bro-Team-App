@@ -28,4 +28,6 @@
     <string name="send">SEND</string>
     <string name="title_activity_group_waypoint_display">Map</string>
     <string name="no_tasks_available">No Tasks Available</string>
+    <string name="LogoutButton">Logout</string>
+    <string name="create_task">Create New Task</string>
 </resources>

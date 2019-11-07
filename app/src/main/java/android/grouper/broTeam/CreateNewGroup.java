@@ -93,7 +93,10 @@ public class CreateNewGroup extends AppCompatActivity {
                 tasks.put("taskName", "Congrats on your new group!");
                 tasks.put("description", "Add more people to your group!");
                 tasks.put("isDone", false);
-                tasks.put("location", "");
+                tasks.put("placeName", "");
+                tasks.put("placeID", "");
+                tasks.put("placeLat", 0);
+                tasks.put("placeLng", 0);
                 taskCollection.add(tasks);
 
                 userId.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

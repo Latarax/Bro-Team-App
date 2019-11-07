@@ -41,6 +41,7 @@
         <activity android:name=".GroupTaskDisplay"
             android:parentActivityName=".HomeGroupList"/>
         <activity android:name=".EditGroupTask"/>
+        <activity android:name=".CreateNewTask"/>
         <activity android:name=".CreateNewGroup"/>
         <activity android:name=".HomeGroupList" />
         <activity android:name=".CreateNewAccount" />
