@@ -3,8 +3,10 @@ package android.grouper.broTeam;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,16 +66,30 @@ public class HomeGroupList extends AppCompatActivity {
 
         myAdapter = new GroupCardAdapter(this, models); //set adapter objects and onclick listeners
         mRecyclerView.setAdapter(myAdapter); // put all cards on display
+    }
 
-        Button signOutButton = findViewById(R.id.signOutButton);
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_menu_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        switch (item.getTitle().toString()){
+            case "Logout":
                 mAuth.signOut();
-                Intent goToLoginPage = new Intent(view.getContext(), LoginMain.class);
-                view.getContext().startActivity(goToLoginPage);
-            }
-        });
+                Intent goToLoginPage = new Intent(HomeGroupList.this, LoginMain.class);
+                startActivity(goToLoginPage);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //This will grab all the groups the current user is enrolled in and make cards

@@ -3,6 +3,8 @@ package android.grouper.broTeam;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -181,6 +183,27 @@ public class GroupTaskDisplay extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_menu_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getTitle().toString()){
+            case "Create New Task":
+                Intent goToLoginPage = new Intent(GroupTaskDisplay.this, CreateNewTask.class);
+                goToLoginPage.putExtra("iGroupId", mGroupId);
+                startActivity(goToLoginPage);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void makeCardCompleted(String title, String description, String tid) {
