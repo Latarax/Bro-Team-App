@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +53,8 @@ public class GroupTaskDisplay extends AppCompatActivity {
         Intent intent = getIntent();
 
         mGroupId = intent.getStringExtra("iGroupId");
+
+        setTitle();
 
         mRecyclerView = findViewById(R.id.myTaskRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -118,6 +121,18 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
     }
 
+    private void setTitle() {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference groupReference = database.collection("groupsList").document(mGroupId);
+        groupReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                getSupportActionBar().setTitle(documentSnapshot.getString("groupName") + " Tasks");
+            }
+        });
+    }
+
     private void getMyList() {
 
         progressBar.setVisibility(View.VISIBLE);
@@ -172,6 +187,9 @@ public class GroupTaskDisplay extends AppCompatActivity {
                         if (aModels.isEmpty()) {
                             aNoTasks.setVisibility(View.VISIBLE);
                         }
+                        if(cModels.isEmpty()){
+                            cNoTasks.setVisibility(View.VISIBLE);
+                        }
                     }
                     progressBar.setVisibility(View.GONE);
                 } else {
@@ -195,8 +213,8 @@ public class GroupTaskDisplay extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getTitle().toString()){
-            case "Create New Task":
+        switch (item.getItemId()){
+            case R.id.createTaskButton:
                 Intent goToLoginPage = new Intent(GroupTaskDisplay.this, CreateNewTask.class);
                 goToLoginPage.putExtra("iGroupId", mGroupId);
                 startActivity(goToLoginPage);

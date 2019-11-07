@@ -64,9 +64,6 @@ public class EditGroupTask extends AppCompatActivity {
         taskId = intent.getStringExtra("iTaskId");
         groupId = intent.getStringExtra("iGroupId");
 
-        Log.d("GroupId", ""+groupId);
-        Log.d("TaskId", ""+taskId);
-
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
@@ -233,7 +230,6 @@ public class EditGroupTask extends AppCompatActivity {
 
         final String taskName = taskTitle.getText().toString().trim();
         final String taskDescribe = taskDescription.getText().toString().trim();
-        final String location = taskLocation.getText().toString().trim();
 
         if (taskName.isEmpty()) {
             taskTitle.setError("Must enter a Task Title");
@@ -244,9 +240,11 @@ public class EditGroupTask extends AppCompatActivity {
             taskDescription.requestFocus();
             return;
         }
-
-        if (location.isEmpty()){
-
+        if(placeName == null){
+            placeName = "";
+            placeID = "";
+            placeLat = 0;
+            placeLng = 0;
         }
 
         final FirebaseFirestore database = FirebaseFirestore.getInstance();

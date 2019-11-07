@@ -6,136 +6,123 @@
     android:layout_height="match_parent">
 
 
-    <EditText
-        android:id="@+id/taskTitle"
-        android:layout_width="300dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="85dp"
-        android:hint="@string/task_title"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitleTextView" />
-
     <TextView
-        android:id="@+id/titleError"
+        android:id="@+id/createTaskTitleError"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginStart="326dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="85dp"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="151dp"
+        android:layout_marginEnd="68dp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/descriptionError"
+        app:layout_constraintStart_toEndOf="@+id/createTaskDescriptionTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/taskTitleTextView"
+        android:id="@+id/createTaskTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="254dp"
         android:text="@string/task_title"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/taskDescriptionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="160dp"
-        android:text="@string/task_description"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle" />
-
-    <TextView
-        android:id="@+id/descriptionError"
-        android:layout_width="2dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="154dp"
-        android:layout_marginEnd="85dp"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/taskDescription"
+        android:id="@+id/createTaskDescription"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="85dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
         android:hint="@string/task_description"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDescriptionTextView" />
-
-    <TextView
-        android:id="@+id/taskAddressTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="201dp"
-        android:text="@string/task_address"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/createTaskDescriptionTextView" />
 
     <EditText
-        android:id="@+id/taskAddress"
+        android:id="@+id/createTaskTitle"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="85dp"
-        android:hint="@string/task_address"
+        android:layout_height="38dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/task_title"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskAddressTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/createTaskTitleTextView" />
 
     <TextView
-        android:id="@+id/assignTaskTextView"
+        android:id="@+id/taskCreateAddressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="186dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/task_address"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createTaskDescription" />
+
+    <EditText
+        android:id="@+id/taskCreateAddress"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:hint="@string/task_address"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskCreateAddressTextView" />
+
+    <TextView
+        android:id="@+id/assignCreateUserTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
         android:text="Assign Task to"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/taskCreateAddress" />
 
     <Spinner
-        android:id="@+id/assignUserDropBox"
+        android:id="@+id/assignCreateUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="337dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignTaskTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/assignCreateUserTextView" />
+
+    <TextView
+        android:id="@+id/createTaskDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/task_description"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createTaskTitle" />
+
+    <TextView
+        android:id="@+id/createDescriptionError"
+        android:layout_width="2dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="69dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/createTaskTitleTextView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/createTaskButton"
         android:layout_width="120dp"
         android:layout_height="55dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="50dp"
         android:text="Save Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -144,8 +131,8 @@
         android:id="@+id/cancelTaskCreate"
         android:layout_width="120dp"
         android:layout_height="55dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="50dp"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
