@@ -107,7 +107,6 @@ public class CreateNewGroup extends AppCompatActivity {
                         database.collection("usersList").document(user.getUid()).update(
                                 "groupList", groups
                         );
-                        Log.d("Create Group", "Added group to users Group List");
 
                         Intent goToHome = new Intent(CreateNewGroup.this, HomeGroupList.class);
                         goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

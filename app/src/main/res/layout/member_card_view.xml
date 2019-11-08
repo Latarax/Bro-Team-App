@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:id="@+id/imageIvTask"
+            android:id="@+id/groupInviteImg"
             android:src="@mipmap/ic_launcher_round"/>
 
         <TextView

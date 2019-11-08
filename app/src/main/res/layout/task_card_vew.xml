@@ -16,12 +16,12 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:id="@+id/imageIvTask"
+                android:id="@+id/groupInviteImg"
                 android:src="@mipmap/ic_launcher_round"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/titleIvTask"
+                android:id="@+id/groupInviteTitle"
                 android:text="Title"
                 android:textSize="22sp"
                 android:textColor="#000"
