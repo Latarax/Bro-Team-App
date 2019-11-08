@@ -89,10 +89,10 @@ public class InviteCardAdapter extends RecyclerView.Adapter<InviteCardHolder> {
                         Log.d("Members Map", ""+membersMap.size());
 
                         Map<String, Object> newMember = new HashMap<>();
-                        newMember.put("Member", user.getUid());
+                        newMember.put("Member", userReference);
                         newMember.put("isAdmin", false);
 
-                        membersMap.put(""+(membersMap.size()+1), newMember);
+                        membersMap.put(""+membersMap.size(), newMember);
                         database.document("groupsList/"+inviteCardModels.get(position).getGroupId()).update("Members", membersMap);
 
                         // Update Users groups list

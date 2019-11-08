@@ -31,5 +31,5 @@
     <string name="LogoutButton">Logout</string>
     <string name="create_task">Create New Task</string>
     <string name="group_invites">Group Invites</string>
-    <string name="invite_from_group">Invited you!</string>
+    <string name="invite_from_group">Invited You!</string>
 </resources>
