@@ -262,7 +262,6 @@ public class EditGroupTask extends AppCompatActivity {
         final DocumentReference task = database.collection("groupsList").document(groupId)
                 .collection("tasks").document(taskId);
 
-
         String assignedUsername = assignedTo.getSelectedItem().toString();
         database.collection("usersList").whereEqualTo("Username", assignedUsername)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

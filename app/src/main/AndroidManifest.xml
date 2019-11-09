@@ -33,6 +33,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".AddNewMember"/>
         <activity
             android:name=".GroupWaypointDisplay"
             android:label="@string/title_activity_group_waypoint_display"></activity>
