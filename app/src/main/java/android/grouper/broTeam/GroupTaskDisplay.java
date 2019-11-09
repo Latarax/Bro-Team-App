@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +53,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
         mGroupId = intent.getStringExtra("iGroupId");
 
-        setTitle();
+        getSupportActionBar().setTitle("Group Tasks");
 
         mRecyclerView = findViewById(R.id.myTaskRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -120,18 +119,6 @@ public class GroupTaskDisplay extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void setTitle() {
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference groupReference = database.collection("groupsList").document(mGroupId);
-        groupReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                getSupportActionBar().setTitle(documentSnapshot.getString("groupName") + " Tasks");
-            }
-        });
     }
 
     private void getMyList() {

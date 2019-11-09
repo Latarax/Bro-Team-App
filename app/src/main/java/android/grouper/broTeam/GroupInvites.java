@@ -42,6 +42,7 @@ public class GroupInvites extends AppCompatActivity {
         mRecyclerView.setAdapter(mInviteAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Invitations to Groups");
 
     }
 

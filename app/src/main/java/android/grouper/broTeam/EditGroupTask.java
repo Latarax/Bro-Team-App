@@ -123,6 +123,7 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setTitle("Edit Task");
     }
 
     @Override

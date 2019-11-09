@@ -54,6 +54,9 @@ public class CreateNewGroup extends AppCompatActivity {
 
             }
         });
+
+
+        getSupportActionBar().setTitle("Create New Group");
     }
 
     private void createGroup(EditText gTitle, EditText gDescription) {
