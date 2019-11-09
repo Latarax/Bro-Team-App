@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,14 +27,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class GroupWaypointDisplay extends FragmentActivity implements OnMapReadyCallback {
+public class GroupWaypointDisplay extends AppCompatActivity implements OnMapReadyCallback {
 
     private String TAG = "GroupWaypointDisplay";
     private GoogleMap mMap;
     BottomNavigationView navigation;
     String mGroupId;
+
+
 
     private class Place
     {
@@ -105,11 +106,10 @@ public class GroupWaypointDisplay extends FragmentActivity implements OnMapReady
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        // Get all place data
-        getPlaceData ();
+
+
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
@@ -164,25 +164,26 @@ public class GroupWaypointDisplay extends FragmentActivity implements OnMapReady
 
                         for (DocumentSnapshot documentSnapshot : taskList) {
                             Log.d("List Item", "" + documentSnapshot.getData());
-                            Map<String, Object> data = documentSnapshot.getData();
+                            //Map<String, Object> data = documentSnapshot.getData();
 
                             // grab user reference in task
-                            DocumentReference userRef = (DocumentReference) data.get("assignedUser");
+                            DocumentReference userRef = (DocumentReference) documentSnapshot.get("assignedUser");
                             String assignedUser = userRef.getId();
 
                             // if task belongs to user, add task data to list of places
                             if (assignedUser.contentEquals(user.getUid())) {
-                                String taskName = data.get("taskName").toString();
-                                String placeName = data.get("placeName").toString();
-                                String placeID = data.get("placeID").toString();
-                                double placeLat = ((double) data.get("placeLat"));
-                                double placeLng = ((double) data.get("placeLng"));
+                                String taskName = documentSnapshot.getString("taskName");
+                                String placeName = documentSnapshot.getString("placeName");
+                                String placeID = documentSnapshot.getString("placeID");
+                                double placeLat = documentSnapshot.getDouble("placeLat");
+                                double placeLng = documentSnapshot.getDouble("placeLng");
 
                                 Log.d(TAG, "Worked: " + placeName);
 
                                 // create new place with data and add to list of user places list
                                 Place place = new Place(taskName, placeName, placeID, placeLat, placeLng);
                                 placeList.add(place);
+                                Log.d(TAG, "Count: " + placeList.size());
                             }
                         }
                     }
@@ -214,5 +215,13 @@ public class GroupWaypointDisplay extends FragmentActivity implements OnMapReady
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        // Get all place data
+        getPlaceData ();
+        Log.d (TAG, "gotPlaces: " + placeList.size());
     }
+
+
+
+
 }
