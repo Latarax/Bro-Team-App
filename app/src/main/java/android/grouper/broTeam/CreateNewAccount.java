@@ -110,6 +110,7 @@ public class CreateNewAccount extends AppCompatActivity {
                     userData.put("Email", email);
                     userData.put("Username", username);
                     userData.put("groupList", Arrays.asList());
+                    userData.put("groupInvites", Arrays.asList());
                     db.collection("usersList").document(user.getUid())
                             .set(userData)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {

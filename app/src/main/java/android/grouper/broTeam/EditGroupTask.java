@@ -123,6 +123,7 @@ public class EditGroupTask extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setTitle("Edit Task");
     }
 
     @Override
@@ -261,7 +262,6 @@ public class EditGroupTask extends AppCompatActivity {
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
         final DocumentReference task = database.collection("groupsList").document(groupId)
                 .collection("tasks").document(taskId);
-
 
         String assignedUsername = assignedTo.getSelectedItem().toString();
         database.collection("usersList").whereEqualTo("Username", assignedUsername)

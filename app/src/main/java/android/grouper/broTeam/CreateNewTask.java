@@ -99,6 +99,8 @@ public class CreateNewTask extends AppCompatActivity {
                 saveTask();
             }
         });
+
+        getSupportActionBar().setTitle("Create New Task");
     }
 
     @Override
