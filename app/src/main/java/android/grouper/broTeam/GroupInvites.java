@@ -3,6 +3,7 @@ package android.grouper.broTeam;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,11 +20,11 @@ import java.util.ArrayList;
 
 public class GroupInvites extends AppCompatActivity {
 
-
     RecyclerView mRecyclerView;
     InviteCardAdapter mInviteAdapter;
     ArrayList<InviteCardModel> inviteCardModels = new ArrayList<>();
     ProgressBar progressBar;
+    TextView noInvites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class GroupInvites extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.groupInviteRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         progressBar = findViewById(R.id.progressBar);
+        noInvites = findViewById(R.id.no_invites);
 
         getMyInvites();
 
@@ -67,10 +69,16 @@ public class GroupInvites extends AppCompatActivity {
                             }
                         });
                     }
+
+                    if (inviteCardModels.isEmpty()){
+                        noInvites.setVisibility(View.VISIBLE);
+                    }
                     progressBar.setVisibility(View.GONE);
 
                 } else {
                     // no invites
+                    noInvites.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         });

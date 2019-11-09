@@ -54,18 +54,19 @@ public class InviteCardAdapter extends RecyclerView.Adapter<InviteCardHolder> {
                 userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        //DocumentReference groupReference = database.document("groupsList/"+inviteCardModels.get(position).getGroupId());
+
                         ArrayList<DocumentReference> groupInvites = (ArrayList<DocumentReference>) documentSnapshot.get("groupInvites");
                         groupInvites.remove(holder.getAdapterPosition());
                         database.document("usersList/"+user.getUid()).update("groupInvites", groupInvites);
+
+                        inviteCardModels.remove(holder.getAdapterPosition());
+                        notifyItemRemoved(holder.getAdapterPosition());
+                        notifyItemRangeChanged(holder.getAdapterPosition(), inviteCardModels.size());
+                        Toast.makeText(context, "Invite to "+holder.mTitle.getText().toString()+" deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                inviteCardModels.remove(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
-                notifyItemRangeChanged(holder.getAdapterPosition(), inviteCardModels.size());
-
-                Toast.makeText(context, "Invite to "+holder.mTitle+" deleted", Toast.LENGTH_SHORT).show();
-
             }
         });
 

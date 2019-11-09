@@ -177,19 +177,19 @@ public class GroupTaskDisplay extends AppCompatActivity {
                                 makeCardAssigned(tTitle, description, tid);
                             }
                         }
+                    }
 
-                        if (mModels.isEmpty()) {
-                            mNoTasks.setVisibility(View.VISIBLE);
-                        }
-                        if (uModels.isEmpty()) {
-                            uNoTasks.setVisibility(View.VISIBLE);
-                        }
-                        if (aModels.isEmpty()) {
-                            aNoTasks.setVisibility(View.VISIBLE);
-                        }
-                        if(cModels.isEmpty()){
-                            cNoTasks.setVisibility(View.VISIBLE);
-                        }
+                    if (mModels.isEmpty()) {
+                        mNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if (uModels.isEmpty()) {
+                        uNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if (aModels.isEmpty()) {
+                        aNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if(cModels.isEmpty()){
+                        cNoTasks.setVisibility(View.VISIBLE);
                     }
                     progressBar.setVisibility(View.GONE);
                 } else {

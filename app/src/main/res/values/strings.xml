@@ -32,4 +32,6 @@
     <string name="create_task">Create New Task</string>
     <string name="group_invites">Group Invites</string>
     <string name="invite_from_group">Invited You!</string>
+    <string name="no_invites_available">No Invites Available</string>
+    <string name="go_to_home">Go Home</string>
 </resources>
