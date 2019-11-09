@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -39,6 +42,8 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
     String mGroupId;
     Location mLastLocation;
     FusedLocationProviderClient mFusedLocationProviderClient;
+
+    Location startLocation;
 
 
     private class Place {
@@ -115,7 +120,9 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
             }
         });
 
+        mFusedLocationProviderClient.requestLocationUpdates(getLocationRequest(), new LocationCallback(), null);
 
+        startLocation = mLastLocation;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -191,14 +198,7 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                                 double placeLng = documentSnapshot.getDouble("placeLng");
 
                                 makePlace(taskName, placeName, placeID, placeLat, placeLng);
-
                                 googleMap.addMarker(new MarkerOptions().position(new LatLng(placeLat, placeLng)).title(taskName));
-
-                                Log.d(TAG, "Worked: " + placeName);
-
-                                // create new place with data and add to list of user places list
-
-
                             }
                         }
                     }
@@ -223,6 +223,15 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
      * installed Google Play services and returned to the app.
      */
 
+    public LocationRequest getLocationRequest ()
+    {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        return locationRequest;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -232,10 +241,6 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         mMap.getUiSettings().setCompassEnabled(true);
 
         // move the camera
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-
-        // Get all place data
-        getPlaceData (mMap);
-        Log.d (TAG, "gotPlaces: " + placeList.size());
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(startLocation.getLatitude(), startLocation.getLongitude())));
     }
 }
