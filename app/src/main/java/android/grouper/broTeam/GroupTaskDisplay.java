@@ -87,6 +87,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
         aRecyclerView.setAdapter(aAdapter);
         cRecyclerView.setAdapter(cAdapter);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_group_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
