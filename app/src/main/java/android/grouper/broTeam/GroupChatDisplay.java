@@ -21,6 +21,9 @@ public class GroupChatDisplay extends AppCompatActivity {
         Intent intent = getIntent();
         mGroupId = intent.getStringExtra("iGroupId");
 
+        getSupportActionBar().setTitle("Group Chat");
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_group_home);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);

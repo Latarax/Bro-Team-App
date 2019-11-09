@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +53,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
         mGroupId = intent.getStringExtra("iGroupId");
 
-        setTitle();
+        getSupportActionBar().setTitle("Group Tasks");
 
         mRecyclerView = findViewById(R.id.myTaskRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -87,6 +86,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
         aRecyclerView.setAdapter(aAdapter);
         cRecyclerView.setAdapter(cAdapter);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_group_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
@@ -119,18 +119,6 @@ public class GroupTaskDisplay extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void setTitle() {
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference groupReference = database.collection("groupsList").document(mGroupId);
-        groupReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                getSupportActionBar().setTitle(documentSnapshot.getString("groupName") + " Tasks");
-            }
-        });
     }
 
     private void getMyList() {
@@ -177,19 +165,19 @@ public class GroupTaskDisplay extends AppCompatActivity {
                                 makeCardAssigned(tTitle, description, tid);
                             }
                         }
+                    }
 
-                        if (mModels.isEmpty()) {
-                            mNoTasks.setVisibility(View.VISIBLE);
-                        }
-                        if (uModels.isEmpty()) {
-                            uNoTasks.setVisibility(View.VISIBLE);
-                        }
-                        if (aModels.isEmpty()) {
-                            aNoTasks.setVisibility(View.VISIBLE);
-                        }
-                        if(cModels.isEmpty()){
-                            cNoTasks.setVisibility(View.VISIBLE);
-                        }
+                    if (mModels.isEmpty()) {
+                        mNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if (uModels.isEmpty()) {
+                        uNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if (aModels.isEmpty()) {
+                        aNoTasks.setVisibility(View.VISIBLE);
+                    }
+                    if(cModels.isEmpty()){
+                        cNoTasks.setVisibility(View.VISIBLE);
                     }
                     progressBar.setVisibility(View.GONE);
                 } else {

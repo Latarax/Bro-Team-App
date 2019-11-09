@@ -87,6 +87,10 @@ public class HomeGroupList extends AppCompatActivity {
                 startActivity(goToLoginPage);
                 finish();
                 return true;
+            case "Group Invites":
+                Intent goToInvites = new Intent(HomeGroupList.this, GroupInvites.class);
+                startActivity(goToInvites);
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -96,6 +100,8 @@ public class HomeGroupList extends AppCompatActivity {
     //to be displayed
     public void getMyList() {
 
+        progressBar.setVisibility(View.VISIBLE);
+
         // get user instance and database reference
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -103,7 +109,6 @@ public class HomeGroupList extends AppCompatActivity {
         // get pointer to user document in database
         DocumentReference userId = database.collection("usersList").document(user.getUid());
 
-        progressBar.setVisibility(View.VISIBLE);
         // get list of groups via task
         userId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -121,7 +126,6 @@ public class HomeGroupList extends AppCompatActivity {
                         for (int i = 0; i < groups.size(); i++) {
 
                             final String gid = groups.get(i).getId();
-                            Log.d("group index", "" + gid);
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DocumentReference groupId = db.collection("groupsList").document(gid);
 
@@ -131,15 +135,11 @@ public class HomeGroupList extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> t) {
                                     if (t.isSuccessful()) {
 
-                                        Log.d("task group call", "" + t.getResult());
                                         DocumentSnapshot documentSnapshot = t.getResult(); // get snapshot of group details
-                                        Log.d("DocumentSnapshot group", "" + documentSnapshot.getData());
 
                                         // extract title and description
                                         String gTitle = (String) documentSnapshot.get("groupName");
                                         String description = (String) documentSnapshot.get("description");
-
-                                        Log.d("Card list", "" + models);
                                         makeCard(gTitle, description, gid); //make extracted details into cards
                                     }
                                 }
@@ -167,6 +167,5 @@ public class HomeGroupList extends AppCompatActivity {
         m.setIdentification(gid);
         models.add(m);
         myAdapter.notifyDataSetChanged();
-        Log.d("Card list", ""+myAdapter.cardModels);
     }
 }

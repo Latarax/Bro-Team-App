@@ -3,6 +3,8 @@ package android.grouper.broTeam;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,11 @@ public class GroupUsersDisplay extends AppCompatActivity {
         myAdapter = new MemberCardAdapter(this, models);
         mRecyclerView.setAdapter(myAdapter);
 
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_group_home);
+        getSupportActionBar().setTitle("Members");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,9 +79,32 @@ public class GroupUsersDisplay extends AppCompatActivity {
         });
     }
 
-    private void makeCard(String username) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.member_menu_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.addGroupMember:
+                Intent goToAddMemberActivity = new Intent(GroupUsersDisplay.this, AddNewMember.class);
+                goToAddMemberActivity.putExtra("iGroupId", groupId);
+                startActivity(goToAddMemberActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void makeCard(String username, String memberId) {
         MemberCardModel m = new MemberCardModel();
         m.setTitle(username);
+        m.setGroupId(groupId);
+        m.setMemberId(memberId);
         models.add(m);
         myAdapter.notifyDataSetChanged();
     }
@@ -82,7 +112,6 @@ public class GroupUsersDisplay extends AppCompatActivity {
     private void displayMembers() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference groupData = db.collection("groupsList").document(groupId);
-        final ArrayList<String> members = new ArrayList<>();
         groupData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -96,12 +125,12 @@ public class GroupUsersDisplay extends AppCompatActivity {
                     for (int i = 0; i < membersMap.size(); i++) {
                         Map<String, Object> member = membersMap.get("" + i);
                         final DocumentReference groupMember = (DocumentReference) member.get("Member");
+                        final String memberId = groupMember.getId();
                         groupMember.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 String member = documentSnapshot.getString("Username");
-                                members.add(member);
-                                makeCard(member);
+                                makeCard(member, memberId);
                             }
                         });
 
