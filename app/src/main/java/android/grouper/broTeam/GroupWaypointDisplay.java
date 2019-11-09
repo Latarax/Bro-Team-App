@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,7 +18,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,8 +39,8 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
     String mGroupId;
     Location mLastLocation;
     FusedLocationProviderClient mFusedLocationProviderClient;
-
-    Location startLocation;
+    Boolean mLocationPermissionGranted = true;
+    int DEFAULT_ZOOM = 10;
 
 
     private class Place {
@@ -111,24 +108,11 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         Intent intent = getIntent();
         mGroupId = intent.getStringExtra("iGroupId");
 
-
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                mLastLocation = location;
-            }
-        });
-
-        mFusedLocationProviderClient.requestLocationUpdates(getLocationRequest(), new LocationCallback(), null);
-
-        startLocation = mLastLocation;
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
@@ -159,9 +143,13 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                 return false;
             }
         });
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_group_home);
+        getSupportActionBar().setTitle("Task Locations");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void getPlaceData(final GoogleMap googleMap) {
+    private void getPlaceData() {
         // get user instance and database reference
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -197,8 +185,7 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                                 double placeLat = documentSnapshot.getDouble("placeLat");
                                 double placeLng = documentSnapshot.getDouble("placeLng");
 
-                                makePlace(taskName, placeName, placeID, placeLat, placeLng);
-                                googleMap.addMarker(new MarkerOptions().position(new LatLng(placeLat, placeLng)).title(taskName));
+                                mMap.addMarker(new MarkerOptions().position(new LatLng(placeLat, placeLng)).title(taskName));
                             }
                         }
                     }
@@ -207,40 +194,104 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         });
     }
 
-    private void makePlace(String task, String name, String ID, Double lat, Double lang) {
-        Place place = new Place(task, name, ID, lat, lang);
-        placeList.add(place);
-        Log.d(TAG, "Count: " + placeList.size());
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mLocationPermissionGranted = true;
+       /* switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                }
+            }
+        }*/
+        updateLocationUI();
+
+        /*switch (Request_Code){
+            case Request_Code:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    GetLastLocation();
+                }
+                break;
+        }*/
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
-    public LocationRequest getLocationRequest ()
-    {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        return locationRequest;
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        //if (ContextCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        /*} else {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }*/
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setZoomGesturesEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
 
-        // move the camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(startLocation.getLatitude(), startLocation.getLongitude())));
+        // Turn on the My Location layer and the related control on the map.
+        updateLocationUI();
+
+        // Get the current location of the device and set the position of the map.
+        getDeviceLocation();
+
+        // Get all Tasks assigned to user
+        getPlaceData();
+    }
+
+    private void updateLocationUI() {
+        if (mMap == null) {
+            return;
+        }
+        try {
+            if (mLocationPermissionGranted) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mLastLocation = null;
+                getLocationPermission();
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+    private void getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+            if (mLocationPermissionGranted) {
+                Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            mLastLocation = (Location) task.getResult();
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastLocation.getLatitude(),
+                                            mLastLocation.getLongitude()), DEFAULT_ZOOM));
+                        } else {
+                            Log.d(TAG, "Current location is null. Using defaults.");
+                            Log.e(TAG, "Exception: %s", task.getException());
+                            // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(, DEFAULT_ZOOM));
+                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                        }
+                    }
+                });
+            }
+        } catch(SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
     }
 }

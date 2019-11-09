@@ -38,7 +38,8 @@
         <activity android:name=".AddNewMember"/>
         <activity
             android:name=".GroupWaypointDisplay"
-            android:label="@string/title_activity_group_waypoint_display"></activity>
+            android:label="@string/title_activity_group_waypoint_display"
+            android:parentActivityName=".HomeGroupList"></activity>
         <activity android:name=".GroupUsersDisplay"
             android:parentActivityName=".HomeGroupList"/>
         <activity android:name=".GroupChatDisplay"
