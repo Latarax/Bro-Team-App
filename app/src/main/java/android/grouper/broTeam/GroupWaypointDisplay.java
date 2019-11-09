@@ -1,6 +1,7 @@
 package android.grouper.broTeam;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,13 +9,15 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,11 +37,11 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
     private GoogleMap mMap;
     BottomNavigationView navigation;
     String mGroupId;
+    Location mLastLocation;
+    FusedLocationProviderClient mFusedLocationProviderClient;
 
 
-
-    private class Place
-    {
+    private class Place {
         private String taskName;
         private String placeName;
         private String ID;
@@ -94,7 +97,7 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         }
     }
 
-    private List placeList = new ArrayList<Place>();
+    private ArrayList<Place> placeList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,12 +106,21 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         Intent intent = getIntent();
         mGroupId = intent.getStringExtra("iGroupId");
 
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                mLastLocation = location;
+            }
+        });
+
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
 
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
@@ -142,14 +154,14 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         });
     }
 
-    private void getPlaceData() {
+    private void getPlaceData(final GoogleMap googleMap) {
         // get user instance and database reference
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         // get pointer to user document in database
-        CollectionReference taskCollection = database.collection("groupsList/"+mGroupId+"/tasks");
-        Log.d("Task Collection", ""+taskCollection.getPath());
+        CollectionReference taskCollection = database.collection("groupsList/" + mGroupId + "/tasks");
+        Log.d("Task Collection", "" + taskCollection.getPath());
 
         taskCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -178,12 +190,15 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                                 double placeLat = documentSnapshot.getDouble("placeLat");
                                 double placeLng = documentSnapshot.getDouble("placeLng");
 
+                                makePlace(taskName, placeName, placeID, placeLat, placeLng);
+
+                                googleMap.addMarker(new MarkerOptions().position(new LatLng(placeLat, placeLng)).title(taskName));
+
                                 Log.d(TAG, "Worked: " + placeName);
 
                                 // create new place with data and add to list of user places list
-                                Place place = new Place(taskName, placeName, placeID, placeLat, placeLng);
-                                placeList.add(place);
-                                Log.d(TAG, "Count: " + placeList.size());
+
+
                             }
                         }
                     }
@@ -192,6 +207,11 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         });
     }
 
+    private void makePlace(String task, String name, String ID, Double lat, Double lang) {
+        Place place = new Place(task, name, ID, lat, lang);
+        placeList.add(place);
+        Log.d(TAG, "Count: " + placeList.size());
+    }
 
     /**
      * Manipulates the map once available.
@@ -211,17 +231,11 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // move the camera
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
 
         // Get all place data
-        getPlaceData ();
+        getPlaceData (mMap);
         Log.d (TAG, "gotPlaces: " + placeList.size());
     }
-
-
-
-
 }
