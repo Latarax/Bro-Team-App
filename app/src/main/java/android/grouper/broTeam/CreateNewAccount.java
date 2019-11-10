@@ -20,10 +20,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -100,80 +103,66 @@ public class CreateNewAccount extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection("usersList").whereEqualTo("Username", username)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                progressBar.setVisibility(View.GONE);
-                if(task.isSuccessful()){
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    Map<String, Object> userData = new HashMap<>();
-                    userData.put("Email", email);
-                    userData.put("Username", username);
-                    userData.put("groupList", Arrays.asList());
-                    userData.put("groupInvites", Arrays.asList());
-                    db.collection("usersList").document(user.getUid())
-                            .set(userData)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("Status", "DocumentSnapshot successfully written!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("Status", "Error writing document", e);
-                                }
-                            });
-                    Toast.makeText(getApplicationContext(), "User Registered Successful", Toast.LENGTH_SHORT).show();
-                    Intent goToHome = new Intent(CreateNewAccount.this, HomeGroupList.class);
-                    goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(goToHome);
-                    if (user != null){
-                        /*UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(username)
-                                .build();
-                        user.updateProfile(profileUpdates);
-                        */
-                        //setUsername();
-
-                        ;
-
-
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                for (DocumentSnapshot d : documents) {
+                    if (d.getString("Username").contentEquals(username)){
+                        progressBar.setVisibility(View.GONE);
+                        usernameField.setError("Username adlready in use");
+                        usernameField.requestFocus();
+                        return;
                     }
                 }
 
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if(task.isSuccessful()){
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("Email", email);
+                            userData.put("Username", username);
+                            userData.put("groupList", Arrays.asList());
+                            userData.put("groupInvites", Arrays.asList());
+                            db.collection("usersList").document(user.getUid())
+                                    .set(userData)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("Status", "DocumentSnapshot successfully written!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("Status", "Error writing document", e);
+                                        }
+                                    });
+                            Toast.makeText(getApplicationContext(), "User Registered Successful", Toast.LENGTH_SHORT).show();
+                            Intent goToHome = new Intent(CreateNewAccount.this, HomeGroupList.class);
+                            goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(goToHome);
+                        }
 
-                else {
-                    if(task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        Toast.makeText(getApplicationContext(), "This email is already in use", Toast.LENGTH_SHORT).show();
+
+                        else {
+                            if(task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(getApplicationContext(), "This email is already in use", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
+                });
+
             }
         });
     }
-    /*
-    private void setUsername() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if(user != null) {
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(usernameField.getText().toString().trim())
-                    .build();
-
-            user.updateProfile(profileUpdates)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("TESTING", "User profile updated.");
-                            }
-                        }
-                    });
-        }
-    };
-    */
 
 }
