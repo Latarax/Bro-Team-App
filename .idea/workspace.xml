@@ -15,11 +15,17 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +39,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_6_API_29" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="FA6B40300095" />
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -42,7 +48,43 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-935">
+              <caret line="38" column="27" selection-start-line="38" selection-start-column="27" selection-end-line="38" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2486#2487#0" expanded="true" />
+                <element signature="e#2520#2521#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="37" column="21" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="443">
+              <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -51,6 +93,7 @@
         <option value="layoutResourceFile_vertical" />
         <option value="layoutResourceFile" />
         <option value="Class" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -78,6 +121,7 @@
       <find>error</find>
       <find>divider</find>
       <find>getMemberId</find>
+      <find>mUserId</find>
     </findStrings>
   </component>
   <component name="GenerateSignedApkSettings">
@@ -87,15 +131,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Josh's-Branch" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/create_new_account.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/login_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/cardClickListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/User.java" />
@@ -122,13 +164,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/HomeGroupList.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/home_group_list.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_group_task.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/member_menu_bar.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/MemberCardModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/InviteCardAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/member_card_view.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/invite_member_card.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupUsersDisplay.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/MemberCardAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardHolder.java" />
@@ -136,13 +176,19 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/add_member_card.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_add_group_member.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddNewMember.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/EditGroupTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupInvites.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/CreateNewTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/CreateNewGroup.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/bottom_nav_color.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_group_waypoint_display.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/bottom_nav_color.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/bottom_group_nav_view.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupUsersDisplay.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java" />
       </list>
     </option>
   </component>
@@ -157,6 +203,18 @@
     </navigator>
     <panes>
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="Grouper" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\marti\AndroidStudioProjects\Grouper" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -180,22 +238,21 @@
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="broTeam" type="cbb59c9e:AndroidPsiDirectoryNode" />
             </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
             <path>
-              <item name="Grouper" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="C:\Users\marti\AndroidStudioProjects\Grouper" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Grouper" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="Grouper" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Course" />
     </panes>
   </component>
@@ -459,7 +516,7 @@
     <frame x="-6" y="34" width="1381" height="885" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17384732" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17611489" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -467,15 +524,15 @@
       <window_info id="Designer" order="6" />
       <window_info id="Capture Tool" order="7" />
       <window_info id="Resources Explorer" order="8" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="0" sideWeight="0.4988662" visible="true" weight="0.3178808" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="0" sideWeight="0.4988662" visible="true" weight="0.3165563" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.49769586" weight="0.32768363" />
       <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49967083" weight="0.32881355" />
       <window_info anchor="bottom" id="Educational.CheckDetails" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.4990125" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.50296247" side_tool="true" weight="0.3271523" />
-      <window_info anchor="bottom" id="Build" order="6" sideWeight="0.49769586" weight="0.22649007" />
+      <window_info anchor="bottom" id="Build" order="6" sideWeight="0.49769586" weight="0.22516556" />
       <window_info anchor="bottom" id="Android Profiler" order="7" weight="0.3295325" />
-      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.49703753" weight="0.25695366" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.49703753" weight="0.25562915" />
       <window_info anchor="bottom" id="Debug" order="9" />
       <window_info anchor="bottom" id="Find" order="10" weight="0.21192053" />
       <window_info anchor="bottom" id="Messages" order="11" />
@@ -539,14 +596,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Added titles to action bar for each activity" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_group_member.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_group_icon.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ec58270f302873640f258da3dae14629/jetified-firebase-firestore-21.1.1/jars/classes.jar!/com/google/firebase/firestore/util/CustomClassMapper.class" />
-    <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-29/android.jar!/android/os/Looper.class" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_create_new_group.xml">
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
@@ -635,51 +684,10 @@
     <entry file="file://$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_group_waypoint_display.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.1.0/9865019bbd2d95e41dede3d8ebf964aa93f97766/appcompat-1.1.0-sources.jar!/androidx/appcompat/app/AppCompatActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
           <caret line="160" selection-start-line="160" selection-end-line="160" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/LoginMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-253">
-          <caret line="41" column="53" selection-start-line="41" selection-start-column="53" selection-end-line="41" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="183" column="106" selection-start-line="183" selection-start-column="106" selection-end-line="183" selection-end-column="106" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1875#1876#0" expanded="true" />
-            <element signature="e#1915#1916#0" expanded="true" />
-            <element signature="e#1964#1965#0" expanded="true" />
-            <element signature="e#2009#2010#0" expanded="true" />
-            <element signature="e#2042#2043#0" expanded="true" />
-            <element signature="e#2075#2076#0" expanded="true" />
-            <element signature="e#2115#2116#0" expanded="true" />
-            <element signature="e#2151#2152#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2219#2220#0" expanded="true" />
-            <element signature="e#2261#2262#0" expanded="true" />
-            <element signature="e#2299#2300#0" expanded="true" />
-            <element signature="e#2333#2334#0" expanded="true" />
-            <element signature="e#2367#2368#0" expanded="true" />
-            <element signature="e#2409#2410#0" expanded="true" />
-            <element signature="e#2447#2448#0" expanded="true" />
-            <element signature="e#2486#2487#0" expanded="true" />
-            <element signature="e#2525#2526#0" expanded="true" />
-            <element signature="e#2577#2578#0" expanded="true" />
-            <element signature="e#2625#2626#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -691,18 +699,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/member_menu_bar.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="39" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/invite_member_card.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/member_menu_bar.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/invite_member_card.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/task_card_vew.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
@@ -761,28 +759,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/HomeGroupList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1486">
-          <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/InviteCardAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="111" column="32" selection-start-line="111" selection-start-column="32" selection-end-line="113" selection-end-column="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/login_main.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="83" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/InviteCardAdapter.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/member_card_view.xml">
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
@@ -791,69 +768,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="75" selection-start-line="18" selection-start-column="75" selection-end-line="18" selection-end-column="75" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-          <folding>
-            <element signature="e#328#329#0" expanded="true" />
-            <element signature="e#359#360#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="33" column="76" selection-start-line="33" selection-start-column="76" selection-end-line="33" selection-end-column="76" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_member_card.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_add_group_member.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="1127">
-          <caret line="71" column="63" selection-start-line="71" selection-start-column="63" selection-end-line="71" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddNewMember.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="104" column="73" selection-start-line="104" selection-start-column="73" selection-end-line="104" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3166#3538#0" expanded="true" />
-            <element signature="e#3537#3538#0" expanded="true" />
-            <element signature="method#findUser#0;class#AddNewMember#0" />
-            <element signature="e#2563#3763#0" expanded="true" />
-            <element signature="e#3762#3763#0" expanded="true" />
-            <element signature="method#makeCard#0;class#AddNewMember#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardHolder.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardModel.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddMemberCardAdapter.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_member_card.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_add_group_member.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/AddNewMember.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/EditGroupTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="629">
@@ -869,27 +789,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupInvites.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="44" column="61" selection-start-line="44" selection-start-column="61" selection-end-line="44" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupUsersDisplay.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="111" column="34" selection-start-line="111" selection-start-column="34" selection-end-line="111" selection-end-column="34" />
-          <folding>
-            <element signature="e#2206#3160#0" />
-            <element signature="method#onCreateOptionsMenu#0;class#GroupUsersDisplay#0" />
-            <element signature="method#onOptionsItemSelected#0;class#GroupUsersDisplay#0" />
-            <element signature="method#makeCard#0;class#GroupUsersDisplay#0" />
-            <element signature="method#displayMembers#0;class#GroupUsersDisplay#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupInvites.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/CreateNewTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
@@ -908,31 +808,107 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="42" column="54" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/login_main.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="1207">
+          <caret line="71" column="4" selection-start-line="71" selection-start-column="4" selection-end-line="83" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/LoginMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-286">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/HomeGroupList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/bottom_nav_color.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/bottom_group_nav_view.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-66">
+          <caret column="36" selection-start-column="36" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/bottom_nav_color.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/bottom_group_nav_view.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="25" column="62" selection-start-line="25" selection-start-column="62" selection-end-line="25" selection-end-column="62" />
+          <caret line="9" column="10" lean-forward="true" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupUsersDisplay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="50" column="78" lean-forward="true" selection-start-line="50" selection-start-column="78" selection-end-line="50" selection-end-column="78" />
+          <folding>
+            <element signature="method#onCreateOptionsMenu#0;class#GroupUsersDisplay#0" />
+            <element signature="method#onOptionsItemSelected#0;class#GroupUsersDisplay#0" />
+            <element signature="method#makeCard#0;class#GroupUsersDisplay#0" />
+            <element signature="method#displayMembers#0;class#GroupUsersDisplay#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_group_waypoint_display.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="32" column="42" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="443">
+          <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupChatDisplay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="37" column="21" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupTaskDisplay.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/grouper/broTeam/GroupWaypointDisplay.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="89" selection-end-column="62" />
+        <state relative-caret-position="-935">
+          <caret line="38" column="27" selection-start-line="38" selection-start-column="27" selection-end-line="38" selection-end-column="27" />
           <folding>
-            <element signature="method#getMyList#0;class#GroupTaskDisplay#0" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#2486#2487#0" expanded="true" />
+            <element signature="e#2520#2521#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="42" column="54" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
         </state>
       </provider>
     </entry>

@@ -50,6 +50,7 @@ public class GroupUsersDisplay extends AppCompatActivity {
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
+        navigation.getMenu().getItem(2).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -58,6 +59,7 @@ public class GroupUsersDisplay extends AppCompatActivity {
                     case R.id.groupTasksItem:
                         Intent a = new Intent(GroupUsersDisplay.this, GroupTaskDisplay.class);
                         a.putExtra("iGroupId", groupId);
+                        item.setChecked(true);
                         startActivity(a);
                         break;
                     case R.id.groupUsersItem:
@@ -66,11 +68,13 @@ public class GroupUsersDisplay extends AppCompatActivity {
                     case R.id.groupNavItem:
                         Intent c = new Intent(GroupUsersDisplay.this, GroupWaypointDisplay.class);
                         c.putExtra("iGroupId", groupId);
+                        item.setChecked(true);
                         startActivity(c);
                         break;
                     case R.id.groupChatItem:
                         Intent d = new Intent(GroupUsersDisplay.this, GroupChatDisplay.class);
                         d.putExtra("iGroupId", groupId);
+                        item.setChecked(true);
                         startActivity(d);
                         break;
                 }
