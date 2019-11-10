@@ -6,7 +6,7 @@
         android:id="@+id/groupTasksItem"
         android:title="@string/group_tasks_item"
         android:icon="@drawable/ic_group_tasks"
-        android:enabled= "true"
+        android:checkable="true"
         />
 
     <!-- this is the item for the nav button -->
@@ -14,7 +14,7 @@
         android:id="@+id/groupNavItem"
         android:title="@string/group_nav_item"
         android:icon="@drawable/ic_group_map"
-        android:enabled= "true"
+        android:checkable="true"
         />
 
     <!-- this is the item for the users button -->
@@ -22,7 +22,7 @@
         android:id="@+id/groupUsersItem"
         android:title="@string/group_users_item"
         android:icon="@drawable/ic_group_users"
-        android:enabled= "true"
+        android:checkable="true"
         />
 
     <!-- this is the item for the chat button -->
@@ -30,7 +30,7 @@
         android:id="@+id/groupChatItem"
         android:title="@string/group_chat_item"
         android:icon="@drawable/ic_group_chat"
-        android:enabled= "true"
+        android:checkable="true"
         />
 
 </menu>

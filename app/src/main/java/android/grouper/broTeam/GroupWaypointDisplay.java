@@ -116,6 +116,7 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
 
         // THIS IS FOR THE BOTTOM NAV VIEW DO NOT TOUCH UNLESS KNOW WHAT DOING
         navigation = findViewById(R.id.bottomNavView);
+        navigation.getMenu().getItem(1).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -124,11 +125,13 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                     case R.id.groupTasksItem:
                         Intent a = new Intent(GroupWaypointDisplay.this, GroupTaskDisplay.class);
                         a.putExtra("iGroupId", mGroupId);
+                        item.setChecked(true);
                         startActivity(a);
                         break;
                     case R.id.groupUsersItem:
                         Intent b = new Intent(GroupWaypointDisplay.this, GroupUsersDisplay.class);
                         b.putExtra("iGroupId", mGroupId);
+                        item.setChecked(true);
                         startActivity(b);
                         break;
                     case R.id.groupNavItem:
@@ -137,6 +140,7 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                     case R.id.groupChatItem:
                         Intent d = new Intent(GroupWaypointDisplay.this, GroupChatDisplay.class);
                         d.putExtra("iGroupId", mGroupId);
+                        item.setChecked(true);
                         startActivity(d);
                         break;
                 }
@@ -184,8 +188,12 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
                                 String placeID = documentSnapshot.getString("placeID");
                                 double placeLat = documentSnapshot.getDouble("placeLat");
                                 double placeLng = documentSnapshot.getDouble("placeLng");
+                                boolean isDone = documentSnapshot.getBoolean("isDone");
 
-                                mMap.addMarker(new MarkerOptions().position(new LatLng(placeLat, placeLng)).title(taskName));
+
+                                if (!placeID.isEmpty() && !isDone) {
+                                    mMap.addMarker(new MarkerOptions().position(new LatLng(placeLat, placeLng)).title("Task: " + taskName).snippet("Location: " + placeName));
+                                }
                             }
                         }
                     }
