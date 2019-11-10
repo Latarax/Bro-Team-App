@@ -34,7 +34,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
 
     RecyclerView mRecyclerView, uRecyclerView, aRecyclerView, cRecyclerView;
     TaskCardAdapter myAdapter, uAdapter, aAdapter, cAdapter;
-    String mGroupId;
+    String mGroupId, mUserId;
     ProgressBar progressBar;
     TextView mNoTasks, uNoTasks, aNoTasks, cNoTasks;
 
@@ -112,6 +112,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
                     case R.id.groupChatItem:
                         Intent d = new Intent(GroupTaskDisplay.this, GroupChatDisplay.class);
                         d.putExtra("iGroupId", mGroupId);
+                        d.putExtra("iUserID", mUserId);
                         startActivity(d);
                         break;
                 }
@@ -126,6 +127,7 @@ public class GroupTaskDisplay extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         // get user instance and database reference
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mUserId = user.getUid();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         // get pointer to user document in database
