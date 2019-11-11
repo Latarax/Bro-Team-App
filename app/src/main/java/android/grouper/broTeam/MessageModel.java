@@ -5,13 +5,6 @@ public class MessageModel {
     private String messageText;
     private String messageUserID;
 
-    /*
-    public MessageModel(String messageUserName, String messageText, String messageUserID){
-        this.messageText = messageText;
-        this.messageUserName = messageUserName;
-        this.messageUserID = messageUserID;
-    }
-     */
 
     public String getMessageUserName() {
         return messageUserName;

@@ -20,16 +20,7 @@ public class MessageCardAdapter extends RecyclerView.Adapter<MessageCardHolder> 
         this.c = c;
         this.models = models;
     }
-/*
-    public int getItemViewType(int position) {
-        if (models.get(position).getMessageUserID().equals(userID)) {
-            return MESSAGE_TYPE_OUT;
-        }
-        return MESSAGE_TYPE_IN;
-    }
 
-
- */
     @NonNull
     @Override
     public MessageCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

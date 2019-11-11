@@ -147,108 +147,31 @@ public class GroupChatDisplay extends AppCompatActivity {
                             chatID = docInfo.get("chatID").toString();
                             Log.d("chatID:", chatID);
                             DocumentReference chatData = db.collection("chats").document(chatID);
-                            /*chatData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()  {
+                            final DocumentReference docRef = db.collection("chats").document(chatID);
+                            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot docInfo = task.getResult();
-                                        ArrayList<Map<String, Object>> messages = (ArrayList<Map<String, Object>>) docInfo.get("messages");
-                                        Log.d("chat stuff", messages.toString());
+                                public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                                    @Nullable FirebaseFirestoreException e) {
+                                    if (e != null) {
+                                        Log.w("Meh", "Listen failed.", e);
+                                        return;
+                                    }
+                                    if (snapshot != null && snapshot.exists()) {
+                                        Log.d("Snapshot", ""+snapshot);
+                                        models.clear();
+                                        ArrayList<Map<String, Object>> messages = (ArrayList<Map<String, Object>>) snapshot.get("messages");
                                         for (int i = 0; i < messages.size(); i++) {
-                                            Map<String, Object> messageInfo = messages.get(i);
-                                            Log.d("individual", messageInfo.toString());
-                                            String messageText = messageInfo.get("content").toString();
+                                            Map<String, Object> message = messages.get(i);
+                                            String messageText = message.get("content").toString();
                                             Log.d("content", messageText);
-                                            String userName = messageInfo.get("uid").toString();
+                                            String userName = message.get("username").toString();
                                             makeCard(userName, messageText);
                                         }
-
-                             */
-                            /*
-                            final String TAG = "bunz";
-                            db.collection("chats")
-                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot snapshots,
-                                                            @Nullable FirebaseFirestoreException e) {
-                                            if (e != null) {
-                                                Log.w(TAG, "listen:error", e);
-                                                return;
-                                            }
-
-                                            for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                                                switch (dc.getType()) {
-                                                    case ADDED:
-                                                        int listSize;
-                                                        Map<String, Object> messagesList = dc.getDocument().getData();
-                                                        Log.d(TAG, "New city: " + messagesList);
-                                                        Log.d("werk", messagesList.get("messages").toString());
-                                                        ArrayList<Object> messagesList2 = (ArrayList<Object>) messagesList.get("messages");
-                                                        listSize = messagesList2.size();
-                                                        for (int i = 0; i < messagesList2.size(); i++) {
-                                                            Log.d("werkkk", messagesList2.get(i).toString());
-                                                            Map<String, Object> message = (Map<String, Object>) messagesList2.get(i);
-                                                            Log.d("yuppp", message.get("content").toString());
-                                                            String content = message.get("content").toString();
-                                                            String username = message.get("username").toString();
-                                                            makeCard(username, content);
-                                                        }
-                                                        break;
-                                                    case MODIFIED:
-                                                        Log.d(TAG, "Modified city: " + dc.getDocument().getData());
-                                                        messagesList = dc.getDocument().getData();
-                                                        Log.d(TAG, "New city: " + messagesList);
-                                                        Log.d("werk", messagesList.get("messages").toString());
-                                                        messagesList2 = (ArrayList<Object>) messagesList.get("messages");
-                                                        models.clear();
-                                                        for (int i = 0; i < messagesList2.size(); i++) {
-                                                            Log.d("werkkk", messagesList2.get(i).toString());
-                                                            Map<String, Object> message = (Map<String, Object>) messagesList2.get(i);
-                                                            Log.d("yuppp", message.get("content").toString());
-                                                            String content = message.get("content").toString();
-                                                            String username = message.get("username").toString();
-                                                            makeCard(username, content);
-                                                        }
-                                                        break;
-                                                    case REMOVED:
-                                                        Log.d(TAG, "Removed city: " + dc.getDocument().getData());
-                                                        break;
-                                                }
-                                            }
-
+                                    } else {
+                                        Log.d("Eh", "Current data: null");
                                         }
-
-
-                                    });
-
-                             */
-                                        final DocumentReference docRef = db.collection("chats").document(chatID);
-                                        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                                                @Nullable FirebaseFirestoreException e) {
-                                                if (e != null) {
-                                                    Log.w("Meh", "Listen failed.", e);
-                                                    return;
-                                                }
-
-                                                if (snapshot != null && snapshot.exists()) {
-                                                    Log.d("Snapshot", ""+snapshot);
-                                                    models.clear();
-                                                    ArrayList<Map<String, Object>> messages = (ArrayList<Map<String, Object>>) snapshot.get("messages");
-                                                    for (int i = 0; i < messages.size(); i++) {
-                                                        Map<String, Object> message = messages.get(i);
-                                                        String messageText = message.get("content").toString();
-                                                        Log.d("content", messageText);
-                                                        String userName = message.get("username").toString();
-                                                        makeCard(userName, messageText);
-                                                    }
-                                                } else {
-                                                    Log.d("Eh", "Current data: null");
-                                                }
-                                            }
-                                        });
-
+                                }
+                            });
                         }
                     }
                     });
