@@ -205,24 +205,8 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = true;
-       /* switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }*/
-        updateLocationUI();
 
-        /*switch (Request_Code){
-            case Request_Code:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    GetLastLocation();
-                }
-                break;
-        }*/
+        updateLocationUI();
     }
 
     private void getLocationPermission() {
@@ -231,11 +215,7 @@ public class GroupWaypointDisplay extends AppCompatActivity implements OnMapRead
          * device. The result of the permission request is handled by a callback,
          * onRequestPermissionsResult.
          */
-        //if (ContextCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-        /*} else {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }*/
     }
 
 
