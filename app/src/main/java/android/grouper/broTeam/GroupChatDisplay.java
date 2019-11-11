@@ -233,6 +233,7 @@ public class GroupChatDisplay extends AppCompatActivity {
                                                 }
 
                                                 if (snapshot != null && snapshot.exists()) {
+                                                    Log.d("Snapshot", ""+snapshot);
                                                     models.clear();
                                                     ArrayList<Map<String, Object>> messages = (ArrayList<Map<String, Object>>) snapshot.get("messages");
                                                     for (int i = 0; i < messages.size(); i++) {

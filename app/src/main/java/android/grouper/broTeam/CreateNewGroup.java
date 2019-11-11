@@ -59,7 +59,7 @@ public class CreateNewGroup extends AppCompatActivity {
         getSupportActionBar().setTitle("Create New Group");
     }
 
-    private void createGroup(EditText gTitle, EditText gDescription) {
+    private void createGroup(final EditText gTitle, final EditText gDescription) {
 
         Log.d("Create Group", "attempting to create group");
 
@@ -68,53 +68,69 @@ public class CreateNewGroup extends AppCompatActivity {
 
         // get pointer to user document in database
         final DocumentReference userId = database.collection("usersList").document(user.getUid());
-        CollectionReference groupsList = database.collection("groupsList");
+        final CollectionReference groupsList = database.collection("groupsList");
+        CollectionReference chatCollection = database.collection("chats");
 
-        // CollectionReference tasks = new CollectionReference();
-        Map<String, Object> Members = new HashMap<>();
-        Map<String, Object> newMember = new HashMap<>();
+        Map<String, ArrayList> chat = new HashMap<>();
+        Map<String, Object> newMessage= new HashMap<>();
+        ArrayList<Map<String, Object>> array = new ArrayList<>();
 
-        newMember.put("Member", userId);
-        newMember.put("isAdmin", true);
-        Members.put("0", newMember);
+        newMessage.put("content", "Welcome To the new Group!");
+        newMessage.put("username", gTitle.getText().toString().trim());
+        array.add(newMessage);
+        chat.put("messages", array);
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("groupName", gTitle.getText().toString());
-        data.put("description", gDescription.getText().toString());
-        data.put("owner", user.getUid());
-        data.put("Members", Members);
-
-
-        groupsList.add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        chatCollection.add(chat).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onSuccess(final DocumentReference documentReference) {
-                Log.d("Document created", documentReference.getId());
-                CollectionReference taskCollection = database.collection("groupsList").document(documentReference.getId()).collection("tasks");
+            public void onSuccess(DocumentReference dR) {
+                String ChatID = dR.getId();
 
-                Map<String, Object> tasks = new HashMap<>();
-                tasks.put("assignedUser", userId);
-                tasks.put("taskName", "Congrats on your new group!");
-                tasks.put("description", "Add more people to your group!");
-                tasks.put("isDone", false);
-                tasks.put("placeName", "");
-                tasks.put("placeID", "");
-                tasks.put("placeLat", 0);
-                tasks.put("placeLng", 0);
-                taskCollection.add(tasks);
+                Map<String, Object> Members = new HashMap<>();
+                Map<String, Object> newMember = new HashMap<>();
 
-                userId.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                newMember.put("Member", userId);
+                newMember.put("isAdmin", true);
+                Members.put("0", newMember);
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("groupName", gTitle.getText().toString().trim());
+                data.put("description", gDescription.getText().toString().trim());
+                data.put("owner", user.getUid());
+                data.put("Members", Members);
+                data.put("chatID", ChatID);
+
+                groupsList.add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) documentSnapshot.get("groupList");
-                        groups.add(documentReference);
-                        database.collection("usersList").document(user.getUid()).update(
-                                "groupList", groups
-                        );
+                    public void onSuccess(final DocumentReference documentReference) {
+                        Log.d("Document created", documentReference.getId());
+                        CollectionReference taskCollection = database.collection("groupsList").document(documentReference.getId()).collection("tasks");
 
-                        Intent goToHome = new Intent(CreateNewGroup.this, HomeGroupList.class);
-                        goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(goToHome);
-                        finish();
+                        Map<String, Object> tasks = new HashMap<>();
+                        tasks.put("assignedUser", userId);
+                        tasks.put("taskName", "Congrats on your new group!");
+                        tasks.put("description", "Add more people to your group!");
+                        tasks.put("isDone", false);
+                        tasks.put("placeName", "");
+                        tasks.put("placeID", "");
+                        tasks.put("placeLat", 0);
+                        tasks.put("placeLng", 0);
+                        taskCollection.add(tasks);
+
+                        userId.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) documentSnapshot.get("groupList");
+                                groups.add(documentReference);
+                                database.collection("usersList").document(user.getUid()).update(
+                                        "groupList", groups
+                                );
+
+                                Intent goToHome = new Intent(CreateNewGroup.this, HomeGroupList.class);
+                                goToHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(goToHome);
+                                finish();
+                            }
+                        });
                     }
                 });
             }
